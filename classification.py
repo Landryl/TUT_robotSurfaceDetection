@@ -35,9 +35,9 @@ def CSVOutput(y_kaggle):
     output = le.inverse_transform(y_kaggle)
     file = open("submission.csv", "w+")
     file.write("# Id,Surface\n")
-        for i in range(output.size):
-            line = str(i) + "," + output[i] + "\n"
-            file.write(line)
+    for i in range(output.size):
+        line = str(i) + "," + output[i] + "\n"
+        file.write(line)
     file.close()
 
 ## Importing the dataset
@@ -54,9 +54,9 @@ y = le.fit_transform(y)
 
 
 ## Data processing
-X = mean_value(X_raw)
+X = mean_value(X_raw, 1703)
 shuffle(X, y)
-X_kaggle = mean_value(X_kaggle_raw)
+X_kaggle = mean_value(X_kaggle_raw, 1705)
 
 
 ## Splitting the dataset into the Training set and Test set
