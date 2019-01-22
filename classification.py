@@ -14,8 +14,9 @@ import pandas as pd
 
 
 # Importing the dataset
-dataset = pd.read_csv('./dataset/y_train_final_kaggle.csv')
+dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
 X_raw = np.load("dataset/X_train_kaggle.npy")
+X_kaggle_raw = np.load("dataset/X_test_kaggle.npy")
 y = dataset.iloc[:, -1].values
 
 
@@ -30,6 +31,11 @@ X = np.zeros((1703, 10))
 for i in range(1703):
     for j in range(10):
         X[i, j] = np.mean(X_raw[i, j])
+        
+X_kaggle = np.zeros((1705, 10))
+for i in range(1705):
+    for j in range(10):
+        X_kaggle[i , j] = np.mean(X_kaggle_raw[i, j])
 
 
 # Splitting the dataset into the Training set and Test set
@@ -49,17 +55,17 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
 # KNN
 from sklearn.neighbors import KNeighborsClassifier
 knn = KNeighborsClassifier(5, p=2)
-knn.fit(X_train, y_train) 
+#knn.fit(X_train, y_train) 
 
 # Logistic Regression
 from sklearn.linear_model import LogisticRegression 
 lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
-lr.fit(X_train, y_train) 
+#lr.fit(X_train, y_train) 
 
 # SVM 
 from sklearn.svm import SVC 
 svm = SVC(kernel = 'linear', C = 1)
-svm.fit(X_train, y_train) 
+#svm.fit(X_train, y_train) 
 
 # Descision Tree
 from sklearn.tree import DecisionTreeClassifier 
@@ -68,13 +74,14 @@ dtree.fit(X_train, y_train)
 
 # Naive Bayes
 from sklearn.naive_bayes import GaussianNB 
-gnb = GaussianNB().fit(X_train, y_train) 
-y_pred = gnb.predict(X_test) 
+gnb = GaussianNB()
+gnb.fit(X_train, y_train) 
   
 
 # Predicting the Test set results
 # Change classifier object
 y_pred = dtree.predict(X_test)
+y_kaggle = dtree.predict(X_kaggle)
 
 
 # Testing accuracy
@@ -86,7 +93,7 @@ accuracy = accuracy_score(y_test, y_pred)
 print('Accuracy: {:.2f}'.format(accuracy))
 
 #Write .csv file
-output = le.inverse_transform(y_pred)
+output = le.inverse_transform(y_kaggle)
 file = open("submission.csv", "w+")
 file.write("# Id,Surface\n")
 for i in range(len(output)):
