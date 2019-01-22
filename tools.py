@@ -1,4 +1,8 @@
 import math
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+# Maths
+
 def quaternionToEulerAngles(x, y, z, w) :
     # X axis rotation
     sinr_cosp = 2.0 * (w * x + y * z)
@@ -18,3 +22,24 @@ def quaternionToEulerAngles(x, y, z, w) :
     yaw = atan2(siny_cosp, cosy_cosp)
 
     return (roll, pitch, yaw)
+
+
+# Utilities for models
+
+#Prints accuracy values of models 
+def accuracy_test(y_test, y_pred):
+    count_misclassified = (y_test != y_pred).sum()
+    print('Misclassified samples: {}'.format(count_misclassified))
+    accuracy = accuracy_score(y_test, y_pred)
+    print('Accuracy: {:.2f}'.format(accuracy))
+
+
+#Creates .cvs output file
+def CSVOutput(y_kaggle, labelencoder):
+    output = labelencoder.inverse_transform(y_kaggle)
+    file = open("submission.csv", "w+")
+    file.write("# Id,Surface\n")
+    for i in range(output.size):
+        line = str(i) + "," + output[i] + "\n"
+        file.write(line)
+    file.close()
