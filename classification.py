@@ -101,10 +101,11 @@ print('Accuracy: {:.2f}'.format(accuracy))
 
 
 ## Write .csv file
-output = le.inverse_transform(y_kaggle)
-file = open("submission.csv", "w+")
-file.write("# Id,Surface\n")
-for i in range(output.size):
-    line = str(i) + "," + output[i] + "\n"
-    file.write(line)
-file.close()
+def CSVOutput(y_kaggle):
+    output = le.inverse_transform(y_kaggle)
+    file = open("submission.csv", "w+")
+    file.write("# Id,Surface\n")
+        for i in range(output.size):
+            line = str(i) + "," + output[i] + "\n"
+            file.write(line)
+    file.close()
