@@ -54,7 +54,7 @@ knn.fit(X_train, y_train)
 # Logistic Regression
 from sklearn.linear_model import LogisticRegression 
 lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
-#lr.fit(X_train, y_train) 
+lr.fit(X_train, y_train) 
 
 # SVM 
 from sklearn.svm import SVC 
@@ -63,9 +63,14 @@ svm.fit(X_train, y_train)
 
 # Descision Tree
 from sklearn.tree import DecisionTreeClassifier 
-dtree = DecisionTreeClassifier(max_depth = 2)
+dtree = DecisionTreeClassifier()
 dtree.fit(X_train, y_train)
 
+# Naive Bayes
+from sklearn.naive_bayes import GaussianNB 
+gnb = GaussianNB().fit(X_train, y_train) 
+y_pred = gnb.predict(X_test) 
+  
 
 # Predicting the Test set results
 # Change classifier object
