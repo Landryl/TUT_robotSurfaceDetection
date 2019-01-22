@@ -17,12 +17,18 @@ from sklearn.utils import shuffle
 
 ## Functions definition
 
+<<<<<<< HEAD
 #Processes the 3D input into a 2D one by computing the mean values of each signal
 def mean_value(X_raw, size):
     X = np.zeros((size, 10))
+=======
+def generate_values(X_raw, size):
+    X = np.zeros((size, 20))
+>>>>>>> e796c63491eb70679259c0294271e34e0c96efb2
     for i in range(size):
         for j in range(10):
             X[i, j] = np.mean(X_raw[i, j])
+            X[i, j+10] = X_raw[i, j].max() - X_raw[i, j].min()
     return X
 
 #Prints accuracy values of models 
@@ -56,9 +62,9 @@ y = le.fit_transform(y)
 
 
 ## Data processing
-X = mean_value(X_raw, 1703)
+X = generate_values(X_raw, 1703)
 shuffle(X, y)
-X_kaggle = mean_value(X_kaggle_raw, 1705)
+X_kaggle = generate_values(X_kaggle_raw, 1705)
 
 
 ## Splitting the dataset into the Training set and Test set
