@@ -80,4 +80,11 @@ print('Misclassified samples: {}'.format(count_misclassified))
 accuracy = accuracy_score(y_test, y_pred)
 print('Accuracy: {:.2f}'.format(accuracy))
 
-
+#Write .csv file
+output = le.inverse_transform(y_pred)
+file = open("submission.csv", "w+")
+file.write("# Id,Surface\n")
+for i in range(len(output)):
+    line = str(i) + "," + output[i] + "\n"
+    file.write(line)
+file.close()
