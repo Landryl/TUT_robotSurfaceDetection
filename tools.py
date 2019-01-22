@@ -1,4 +1,4 @@
-import math
+from math import pi, atan, atan2, asin
 def quaternionToEulerAngles(x, y, z, w) :
     # X axis rotation
     sinr_cosp = 2.0 * (w * x + y * z)
