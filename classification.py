@@ -17,6 +17,7 @@ from sklearn.utils import shuffle
 
 ## Functions definition
 
+#Processes the 3D input into a 2D one by computing the mean values of each signal
 def mean_value(X_raw, size):
     X = np.zeros((size, 10))
     for i in range(size):
@@ -24,13 +25,14 @@ def mean_value(X_raw, size):
             X[i, j] = np.mean(X_raw[i, j])
     return X
 
+#Prints accuracy values of models 
 def accuracy_test(classifier):
     count_misclassified = (y_test != y_pred).sum()
     print('Misclassified samples: {}'.format(count_misclassified))
     accuracy = accuracy_score(y_test, y_pred)
     print('Accuracy: {:.2f}'.format(accuracy))
 
-#Creates .cvs file
+#Creates .cvs output file
 def CSVOutput(y_kaggle):
     output = le.inverse_transform(y_kaggle)
     file = open("submission.csv", "w+")
