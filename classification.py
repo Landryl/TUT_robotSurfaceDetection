@@ -12,6 +12,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+#Creates .cvs file
+def CSVOutput(y_kaggle):
+    output = le.inverse_transform(y_kaggle)
+    file = open("submission.csv", "w+")
+    file.write("# Id,Surface\n")
+        for i in range(output.size):
+            line = str(i) + "," + output[i] + "\n"
+            file.write(line)
+    file.close()
 
 ## Importing the dataset
 dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
@@ -101,11 +110,5 @@ print('Accuracy: {:.2f}'.format(accuracy))
 
 
 ## Write .csv file
-def CSVOutput(y_kaggle):
-    output = le.inverse_transform(y_kaggle)
-    file = open("submission.csv", "w+")
-    file.write("# Id,Surface\n")
-        for i in range(output.size):
-            line = str(i) + "," + output[i] + "\n"
-            file.write(line)
-    file.close()
+CSVOutput(y_kaggle)
+
