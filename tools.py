@@ -1,5 +1,6 @@
+from sklearn.metrics import accuracy_score
 from math import pi, atan, atan2, asin
-from sklearn.metrics import confusion_matrix, accuracy_score
+
 
 # Maths
 

@@ -10,13 +10,15 @@ Created on Mon Jan 21 18:02:59 2019
 ## Importing the libraries
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 
 import loaders
 import tools
 
 
 # Loading dataset
-X_train, y_train, X_test, y_test, le = loaders.load_for_train()
+test_size = 0.25
+X_train, y_train, X_test, y_test, le = loaders.load_for_train(test_size)
 X, y, X_kaggle, le = loaders.load_for_kaggle()
 
 
@@ -64,6 +66,7 @@ y_kaggle = rfc.predict(X_kaggle)
 
 ## Testing accuracy
 tools.accuracy_test(y_test, y_pred)
+cm = confusion_matrix(y_test, y_pred)
 
 
 ## Write .csv file
