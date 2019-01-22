@@ -8,11 +8,13 @@ from sklearn.model_selection import train_test_split
 
 #Processes the 3D input into a 2D one by computing the mean values of each signal
 def generate_values(X_raw, size):
-    X = np.zeros((size, 20))
+    X = np.zeros((size, 40))
     for i in range(size):
         for j in range(10):
             X[i, j] = np.mean(X_raw[i, j])
             X[i, j+10] = X_raw[i, j].max() - X_raw[i, j].min()
+            X[i, j+20] = X_raw[i, j].max()
+            X[i, j+30] = X_raw[i, j].min()
     return X
 
 def load_for_train() :
