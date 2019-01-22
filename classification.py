@@ -102,8 +102,12 @@ dtree.fit(X_train, y_train)
 # Naive Bayes
 from sklearn.naive_bayes import GaussianNB 
 gnb = GaussianNB()
-gnb.fit(X_train, y_train) 
-  
+#gnb.fit(X_train, y_train) 
+
+# Multiclass LDA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+mlda = LinearDiscriminantAnalysis()
+#mlda.fit(X_train, y_train)
 
 ## Predicting the Test set results
 # Change classifier object
