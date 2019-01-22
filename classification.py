@@ -14,17 +14,10 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.utils import shuffle
 
+import loaders
 
 ## Functions definition
 
-#Processes the 3D input into a 2D one by computing the mean values of each signal
-def generate_values(X_raw, size):
-    X = np.zeros((size, 20))
-    for i in range(size):
-        for j in range(10):
-            X[i, j] = np.mean(X_raw[i, j])
-            X[i, j+10] = X_raw[i, j].max() - X_raw[i, j].min()
-    return X
 
 #Prints accuracy values of models 
 def accuracy_test(classifier):
@@ -44,37 +37,39 @@ def CSVOutput(y_kaggle):
     file.close()
 
 ## Importing the dataset
-dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
-X_raw = np.load("dataset/X_train_kaggle.npy")
-X_kaggle_raw = np.load("dataset/X_test_kaggle.npy")
-y = dataset.iloc[:, -1].values
+#dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
+#X_raw = np.load("dataset/X_train_kaggle.npy")
+#X_kaggle_raw = np.load("dataset/X_test_kaggle.npy")
+#y = dataset.iloc[:, -1].values
 
+X_train, y_train, X_test, y_test, le = loaders.load_for_train()
+X, y, X_kaggle, le = loaders.load_for_kaggle()
 
 ## Encoding labels
-from sklearn.preprocessing import LabelEncoder
-le = LabelEncoder()
-y = le.fit_transform(y)
+#from sklearn.preprocessing import LabelEncoder
+#le = LabelEncoder()
+#y = le.fit_transform(y)
 
 
 ## Data processing
-X = generate_values(X_raw, 1703)
-shuffle(X, y)
-X_kaggle = generate_values(X_kaggle_raw, 1705)
+#X = generate_values(X_raw, 1703)
+#shuffle(X, y)
+#X_kaggle = generate_values(X_kaggle_raw, 1705)
 
 
 ## Splitting the dataset into the Training set and Test set
-from sklearn.model_selection import train_test_split
+#from sklearn.model_selection import train_test_split
 # On split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
+#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
 # On full data
 #X_train, y_train = X, y
 
 
 ## Feature scaling
-from sklearn.preprocessing import StandardScaler
-sc_X = StandardScaler()
-X_train = sc_X.fit_transform(X_train)
-X_test = sc_X.transform(X_test) # object already scaled on same basis
+#from sklearn.preprocessing import StandardScaler
+#sc_X = StandardScaler()
+#X_train = sc_X.fit_transform(X_train)
+#X_test = sc_X.transform(X_test) # object already scaled on same basis
 
 
 ## Creating and fitting classifier to the Training set
