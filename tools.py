@@ -1,5 +1,5 @@
 import math
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import accuracy_score
 
 # Maths
 
