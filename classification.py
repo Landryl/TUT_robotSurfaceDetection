@@ -91,13 +91,13 @@ lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
 
 # SVM 
 from sklearn.svm import SVC 
-svm = SVC(kernel = 'rbf', C = 1)
-svm.fit(X_train, y_train) 
+svm = SVC(kernel = 'linear', C = 1)
+#svm.fit(X_train, y_train) 
 
 # Decision Tree
 from sklearn.tree import DecisionTreeClassifier 
 dtree = DecisionTreeClassifier()
-#dtree.fit(X_train, y_train)
+dtree.fit(X_train, y_train)
 
 # Naive Bayes
 from sklearn.naive_bayes import GaussianNB 
@@ -111,8 +111,8 @@ mlda = LinearDiscriminantAnalysis()
 
 ## Predicting the Test set results
 # Change classifier object
-y_pred = svm.predict(X_test)
-y_kaggle = svm.predict(X_kaggle)
+y_pred = dtree.predict(X_test)
+y_kaggle = dtree.predict(X_kaggle)
 
 
 ## Testing accuracy
