@@ -11,6 +11,24 @@ Created on Mon Jan 21 18:02:59 2019
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.utils import shuffle
+
+
+## Functions definition
+
+def mean_value(X_raw, size):
+    X = np.zeros((size, 10))
+    for i in range(size):
+        for j in range(10):
+            X[i, j] = np.mean(X_raw[i, j])
+    return X
+
+def accuracy_test(classifier):
+    count_misclassified = (y_test != y_pred).sum()
+    print('Misclassified samples: {}'.format(count_misclassified))
+    accuracy = accuracy_score(y_test, y_pred)
+    print('Accuracy: {:.2f}'.format(accuracy))
 
 
 ## Importing the dataset
@@ -27,25 +45,15 @@ y = le.fit_transform(y)
 
 
 ## Data processing
-X = np.zeros((1703, 10))
-for i in range(1703):
-    for j in range(10):
-        X[i, j] = np.mean(X_raw[i, j])
-        
-X_kaggle = np.zeros((1705, 10))
-for i in range(1705):
-    for j in range(10):
-        X_kaggle[i , j] = np.mean(X_kaggle_raw[i, j])
-
-from sklearn.utils import shuffle
+X = mean_value(X_raw)
 shuffle(X, y)
+X_kaggle = mean_value(X_kaggle_raw)
+
 
 ## Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
-
 # On split data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
-
 # On full data
 #X_train, y_train = X, y
 
@@ -92,12 +100,7 @@ y_kaggle = dtree.predict(X_kaggle)
 
 
 ## Testing accuracy
-from sklearn.metrics import confusion_matrix, accuracy_score
-cm = confusion_matrix(y_test, y_pred)
-count_misclassified = (y_test != y_pred).sum()
-print('Misclassified samples: {}'.format(count_misclassified))
-accuracy = accuracy_score(y_test, y_pred)
-print('Accuracy: {:.2f}'.format(accuracy))
+accuracy_test(dtree)
 
 
 ## Write .csv file
