@@ -63,7 +63,7 @@ svm.fit(X_train, y_train)
 
 # Descision Tree
 from sklearn.tree import DecisionTreeClassifier 
-dtree = DecisionTreeClassifier(max_depth = 2)
+dtree = DecisionTreeClassifier()
 dtree.fit(X_train, y_train)
 
 
