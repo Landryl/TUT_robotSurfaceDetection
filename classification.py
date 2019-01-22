@@ -37,6 +37,8 @@ for i in range(1705):
     for j in range(10):
         X_kaggle[i , j] = np.mean(X_kaggle_raw[i, j])
 
+from sklearn.utils import shuffle
+shuffle(X, y)
 
 ## Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
@@ -102,7 +104,7 @@ print('Accuracy: {:.2f}'.format(accuracy))
 output = le.inverse_transform(y_kaggle)
 file = open("submission.csv", "w+")
 file.write("# Id,Surface\n")
-for i in range(len(output)):
+for i in range(output.size):
     line = str(i) + "," + output[i] + "\n"
     file.write(line)
 file.close()
