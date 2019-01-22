@@ -25,6 +25,7 @@ def load_for_train() :
     
     X = generate_values(X_raw, 1703)
 
+    X, y = shuffle(X, y)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
 
     return (X_train, y_train, X_test, y_test, le)
@@ -38,6 +39,8 @@ def load_for_kaggle() :
     y = le.fit_transform(y)
 
     X = generate_values(X_raw, 1703)
+
+    X, y = shuffle(X, y)
 
     X_kaggle_raw = np.load("dataset/X_test_kaggle.npy")
     X_kaggle = generate_values(X_kaggle_raw, 1705)
