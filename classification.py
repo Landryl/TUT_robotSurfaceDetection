@@ -40,7 +40,11 @@ svm = SVC(kernel = 'rbf', C = 1)
 # Decision Tree
 from sklearn.tree import DecisionTreeClassifier 
 dtree = DecisionTreeClassifier()
-dtree.fit(X_train, y_train)
+#dtree.fit(X_train, y_train)
+
+from sklearn.ensemble import RandomForestClassifier
+rfc = RandomForestClassifier(300)
+rfc.fit(X_train, y_train)
 
 # Naive Bayes
 from sklearn.naive_bayes import GaussianNB 
@@ -55,9 +59,8 @@ mlda = LinearDiscriminantAnalysis()
 
 ## Predicting the Test set results
 # Change classifier object
-y_pred = dtree.predict(X_test)
-y_kaggle = dtree.predict(X_kaggle)
-
+y_pred = rfc.predict(X_test)
+y_kaggle = rfc.predict(X_kaggle)
 
 ## Testing accuracy
 tools.accuracy_test(y_test, y_pred)
