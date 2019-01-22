@@ -10,14 +10,12 @@ Created on Mon Jan 21 18:02:59 2019
 ## Importing the libraries
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.utils import shuffle
 
 import loaders
 
 ## Functions definition
-
 
 #Prints accuracy values of models 
 def accuracy_test(classifier):
@@ -36,41 +34,11 @@ def CSVOutput(y_kaggle):
         file.write(line)
     file.close()
 
-## Importing the dataset
-#dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
-#X_raw = np.load("dataset/X_train_kaggle.npy")
-#X_kaggle_raw = np.load("dataset/X_test_kaggle.npy")
-#y = dataset.iloc[:, -1].values
+
+# Loading dataset
 
 X_train, y_train, X_test, y_test, le = loaders.load_for_train()
 X, y, X_kaggle, le = loaders.load_for_kaggle()
-
-## Encoding labels
-#from sklearn.preprocessing import LabelEncoder
-#le = LabelEncoder()
-#y = le.fit_transform(y)
-
-
-## Data processing
-#X = generate_values(X_raw, 1703)
-#shuffle(X, y)
-#X_kaggle = generate_values(X_kaggle_raw, 1705)
-
-
-## Splitting the dataset into the Training set and Test set
-#from sklearn.model_selection import train_test_split
-# On split data
-#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
-# On full data
-#X_train, y_train = X, y
-
-
-## Feature scaling
-#from sklearn.preprocessing import StandardScaler
-#sc_X = StandardScaler()
-#X_train = sc_X.fit_transform(X_train)
-#X_test = sc_X.transform(X_test) # object already scaled on same basis
-
 
 ## Creating and fitting classifier to the Training set
 
@@ -87,12 +55,12 @@ lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
 # SVM 
 from sklearn.svm import SVC 
 svm = SVC(kernel = 'rbf', C = 1)
-svm.fit(X_train, y_train) 
+#svm.fit(X_train, y_train) 
 
 # Decision Tree
 from sklearn.tree import DecisionTreeClassifier 
 dtree = DecisionTreeClassifier()
-#dtree.fit(X_train, y_train)
+dtree.fit(X_train, y_train)
 
 # Naive Bayes
 from sklearn.naive_bayes import GaussianNB 
@@ -106,8 +74,8 @@ mlda = LinearDiscriminantAnalysis()
 
 ## Predicting the Test set results
 # Change classifier object
-y_pred = svm.predict(X_test)
-y_kaggle = svm.predict(X_kaggle)
+y_pred = dtree.predict(X_test)
+y_kaggle = dtree.predict(X_kaggle)
 
 
 ## Testing accuracy
