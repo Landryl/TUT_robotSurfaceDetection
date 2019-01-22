@@ -14,13 +14,19 @@ import pandas as pd
 
 # Importing the dataset
 dataset = pd.read_csv('./dataset/y_train_final_kaggle.csv')
-X = np.load("dataset/X_train_kaggle.npy")
+X_raw = np.load("dataset/X_train_kaggle.npy")
 y = dataset.iloc[:, -1].values
 
 # Encoding labels
 from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 y = le.fit_transform(y)
+
+# Data processing
+X = np.zeros((1703, 10))
+for i in range(1703):
+    for j in range(10):
+        X[i, j] = np.mean(X_raw[i, j])
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
@@ -40,9 +46,13 @@ classifier.fit(X_train, y_train)
 # Predicting the Test set results
 y_pred = classifier.predict(X_test)
 
-# Making the Confusion Matrix
-from sklearn.metrics import confusion_matrix
+# Testing accuracy
+from sklearn.metrics import confusion_matrix, accuracy_score
 cm = confusion_matrix(y_test, y_pred)
+count_misclassified = (y_test != y_pred).sum()
+print('Misclassified samples: {}'.format(count_misclassified))
+accuracy = accuracy_score(y_test, y_pred)
+print('Accuracy: {:.2f}'.format(accuracy))
 
 # Visualising the Training set results
 
