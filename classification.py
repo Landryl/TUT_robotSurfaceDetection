@@ -30,6 +30,15 @@ def accuracy_test(classifier):
     accuracy = accuracy_score(y_test, y_pred)
     print('Accuracy: {:.2f}'.format(accuracy))
 
+#Creates .cvs file
+def CSVOutput(y_kaggle):
+    output = le.inverse_transform(y_kaggle)
+    file = open("submission.csv", "w+")
+    file.write("# Id,Surface\n")
+        for i in range(output.size):
+            line = str(i) + "," + output[i] + "\n"
+            file.write(line)
+    file.close()
 
 ## Importing the dataset
 dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
@@ -104,10 +113,5 @@ accuracy_test(dtree)
 
 
 ## Write .csv file
-output = le.inverse_transform(y_kaggle)
-file = open("submission.csv", "w+")
-file.write("# Id,Surface\n")
-for i in range(output.size):
-    line = str(i) + "," + output[i] + "\n"
-    file.write(line)
-file.close()
+CSVOutput(y_kaggle)
+
