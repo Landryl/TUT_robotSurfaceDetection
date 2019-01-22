@@ -31,6 +31,8 @@ for i in range(1703):
     for j in range(10):
         X[i, j] = np.mean(X_raw[i, j])
 
+from sklearn.utils import shuffle
+shuffle(X, y)
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
