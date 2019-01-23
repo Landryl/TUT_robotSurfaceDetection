@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import GroupShuffleSplit
 
 
 def average_linearity(sample) :
@@ -58,11 +58,22 @@ def load_for_train_groups(test_size, extractor=generate_values):
     
     X = extractor(X_raw, 1703)
     
-    rs = ShuffleSplit(n_splits=1, test_size=test_size)
+    rs = GroupShuffleSplit(n_splits=1, test_size=test_size)
     
     train_index, test_index = next(rs.split(X, y, group))
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
+    
+    group1, group2 = group[train_index], group[test_index]
+    
+    unique1, counts1 = np.unique(group1, return_counts=True)
+    unique2, counts2 = np.unique(group2, return_counts=True)
+
+
+    print(np.asarray((unique1, counts1)).T)
+    print()
+    print(np.asarray((unique2, counts2)).T)
+
     
     return (X_train, y_train, X_test, y_test, le)
     
