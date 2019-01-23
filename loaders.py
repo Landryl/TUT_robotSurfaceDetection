@@ -5,6 +5,8 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import ShuffleSplit
+
 
 def average_linearity(sample) :
     y = [i for i in range(len(sample))]
@@ -16,6 +18,7 @@ def average_linearity(sample) :
 #    print(average_linearity/len(sample))
     return average_linearity/len(sample)
 
+
 #Processes the 3D input into a 2D one by computing the mean values of each signal
 def generate_values(X_raw, size):
     X = np.zeros((size, 40))
@@ -26,6 +29,7 @@ def generate_values(X_raw, size):
             X[i, j+20] = X_raw[i, j].max()
             X[i, j+30] = X_raw[i, j].min()
     return X
+
 
 def load_for_train(test_size) :
     dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
@@ -41,6 +45,27 @@ def load_for_train(test_size) :
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
 
     return (X_train, y_train, X_test, y_test, le)
+
+
+def load_for_train_groups(test_size):
+    dataset = pd.read_csv('dataset/groups.csv')
+    X_raw = np.load("dataset/X_train_kaggle.npy")
+    y = dataset.iloc[:, -1].values
+    group = dataset.iloc[:, 1].values
+    
+    le = LabelEncoder()
+    y = le.fit_transform(y)
+    
+    X = generate_values(X_raw, 1703)
+    
+    rs = ShuffleSplit(n_splits=1, test_size=test_size)
+    
+    train_index, test_index = next(rs.split(X, y, group))
+    X_train, X_test = X[train_index], X[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+    
+    return (X_train, y_train, X_test, y_test, le)
+    
 
 def load_for_kaggle() :
     dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
