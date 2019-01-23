@@ -1,6 +1,6 @@
-from sklearn.metrics import accuracy_score
 from math import pi, atan, atan2, asin
-
+import numpy as np
+from sklearn.metrics import accuracy_score
 
 # Maths
 
@@ -44,3 +44,27 @@ def CSVOutput(y_kaggle, labelencoder):
         line = str(i) + "," + output[i] + "\n"
         file.write(line)
     file.close()
+    
+# Print total data by groups
+def print_total_groups(dataset):
+    groups_labeled = dataset.iloc[:, [1,2]].values
+    
+    total_group_numbers, indices, total_counts = np.unique(groups_labeled[:, 0], return_index=True, return_counts=True)
+    total_labels = groups_labeled[indices, 1]
+    
+    print("Total data (group_number - counts - labels):\n", np.asarray((total_group_numbers, total_counts, total_labels)).T)
+    print()
+    
+    
+# Printing groups repartition in test and train data
+def print_train_test_repartition(dataset, train_index, test_index):
+    groups_labeled = dataset.iloc[:, [1,2]].values
+    groups_train, groups_test = groups_labeled[train_index], groups_labeled[test_index]
+    
+    train_group_numbers, train_counts = np.unique(groups_train[:, 1], return_counts=True)
+    test_group_numbers, test_counts = np.unique(groups_test[:, 1], return_counts=True)
+
+    print("Training data (labels - count):\n", np.asarray((train_group_numbers, train_counts)).T)
+    print()
+    print("Training data (labels - count):\n", np.asarray((test_group_numbers, test_counts)).T)
+    print()

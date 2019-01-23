@@ -11,68 +11,78 @@ Created on Mon Jan 21 18:02:59 2019
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
+import pandas as pd
+
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression 
+from sklearn.svm import SVC 
+from sklearn.tree import DecisionTreeClassifier 
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB 
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 import loaders
 import tools
 import feature_extractors
 
 
-# Loading dataset
+dataset = pd.read_csv('dataset/groups.csv')
 test_size = 0.20
+i = 0
 
 extractor = feature_extractors.deviationer
-X_train, y_train, X_test, y_test, le = loaders.load_for_train_groups(test_size, extractor)
+indices_generator, le = loaders.load_for_train_groups(test_size, extractor)
 X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
 
-## Creating and fitting classifier to the Training set
+## Benchmarking classifiers over different split possibilities
+for train_index, test_index in indices_generator:
+    print("\nSplit {}\n".format(i))
+    i += 1
+    X_train, X_test = X[train_index], X[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+    
+    tools.print_train_test_repartition(dataset, train_index, test_index)
 
-# KNN
-from sklearn.neighbors import KNeighborsClassifier
-knn = KNeighborsClassifier(5, p=2)
-knn.fit(X_train, y_train) 
-
-# Logistic Regression
-from sklearn.linear_model import LogisticRegression 
-lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
-lr.fit(X_train, y_train) 
-
-# SVM 
-from sklearn.svm import SVC 
-svm = SVC(kernel = 'linear', C = 1) #C to improve model 
-svm.fit(X_train, y_train) 
-
-# Decision Tree
-from sklearn.tree import DecisionTreeClassifier 
-dtree = DecisionTreeClassifier()
-dtree.fit(X_train, y_train)
-
-from sklearn.ensemble import RandomForestClassifier
-rfc = RandomForestClassifier(2000)
-rfc.fit(X_train, y_train)
-
-# Naive Bayes
-from sklearn.naive_bayes import GaussianNB 
-gnb = GaussianNB()
-gnb.fit(X_train, y_train) 
-
-# Multiclass LDA
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-mlda = LinearDiscriminantAnalysis()
-mlda.fit(X_train, y_train)
-
-classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda)]
-for classifier in classifiers :
-    ## Predicting the Test set results
-    # Change classifier object
-    print(classifier[0])
-    y_pred = classifier[1].predict(X_test)
-    tools.accuracy_test(y_test, y_pred)
-    print()
-
-y_kaggle = rfc.predict(X_kaggle)
-
-## Testing accuracy
-cm = confusion_matrix(y_test, y_pred)
+    # KNN
+    knn = KNeighborsClassifier(5, p=2)
+    knn.fit(X_train, y_train) 
+    
+    # Logistic Regression
+    lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
+    lr.fit(X_train, y_train) 
+    
+    # SVM 
+    svm = SVC(kernel = 'linear', C = 1) #C to improve model 
+    svm.fit(X_train, y_train) 
+    
+    # Decision Tree
+    dtree = DecisionTreeClassifier()
+    dtree.fit(X_train, y_train)
+    
+    # Random Forest
+    rfc = RandomForestClassifier(1500)
+    rfc.fit(X_train, y_train)
+    
+    # Naive Bayes
+    gnb = GaussianNB()
+    gnb.fit(X_train, y_train) 
+    
+    # Multiclass LDA
+    mlda = LinearDiscriminantAnalysis()
+    mlda.fit(X_train, y_train)
+    
+    classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda)]
+    for classifier in classifiers :
+        ## Predicting the Test set results
+        # Change classifier object
+        print(classifier[0])
+        y_pred = classifier[1].predict(X_test)
+        tools.accuracy_test(y_test, y_pred)
+        print()
+     
+## Fitting and predicting for real test samples
+gnb.fit(X, y)
+y_kaggle = gnb.predict(X_kaggle)
 
 ## Write .csv file
 tools.CSVOutput(y_kaggle, le)
