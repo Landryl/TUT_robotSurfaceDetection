@@ -19,6 +19,7 @@ import feature_extractors
 
 # Loading dataset
 test_size = 0.25
+
 extractor = feature_extractors.deviationer
 X_train, y_train, X_test, y_test, le = loaders.load_for_train(test_size, extractor)
 X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
@@ -37,7 +38,7 @@ lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
 
 # SVM 
 from sklearn.svm import SVC 
-svm = SVC(kernel = 'rbf', C = 1)
+svm = SVC(kernel = 'rbf', C = 1) #C to improve model 
 #svm.fit(X_train, y_train) 
 
 # Decision Tree
