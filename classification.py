@@ -19,15 +19,10 @@ import feature_extractors
 
 # Loading dataset
 test_size = 0.25
-<<<<<<< HEAD
-X_train, y_train, X_test, y_test, le = loaders.load_for_train_groups(test_size)
-X, y, X_kaggle, le = loaders.load_for_kaggle()
 
-=======
 extractor = feature_extractors.deviationer
 X_train, y_train, X_test, y_test, le = loaders.load_for_train(test_size, extractor)
 X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
->>>>>>> b07969f3536d88bdb298222e382651afd16e26fd
 
 ## Creating and fitting classifier to the Training set
 

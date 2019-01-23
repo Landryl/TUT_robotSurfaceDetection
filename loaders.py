@@ -30,12 +30,8 @@ def generate_values(X_raw, size):
             X[i, j+30] = X_raw[i, j].min()
     return X
 
-<<<<<<< HEAD
 
-def load_for_train(test_size) :
-=======
 def load_for_train(test_size, extractor=generate_values) :
->>>>>>> b07969f3536d88bdb298222e382651afd16e26fd
     dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
     X_raw = np.load("dataset/X_train_kaggle.npy")
     y = dataset.iloc[:, -1].values
@@ -50,7 +46,6 @@ def load_for_train(test_size, extractor=generate_values) :
 
     return (X_train, y_train, X_test, y_test, le)
 
-<<<<<<< HEAD
 
 def load_for_train_groups(test_size):
     dataset = pd.read_csv('dataset/groups.csv')
@@ -72,10 +67,7 @@ def load_for_train_groups(test_size):
     return (X_train, y_train, X_test, y_test, le)
     
 
-def load_for_kaggle() :
-=======
 def load_for_kaggle(extractor=generate_values) :
->>>>>>> b07969f3536d88bdb298222e382651afd16e26fd
     dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
     X_raw = np.load("dataset/X_train_kaggle.npy")
     y = dataset.iloc[:, -1].values
