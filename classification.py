@@ -34,12 +34,12 @@ knn = KNeighborsClassifier(5, p=2)
 # Logistic Regression
 from sklearn.linear_model import LogisticRegression 
 lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
-#lr.fit(X_train, y_train) 
+lr.fit(X_train, y_train) 
 
 # SVM 
 from sklearn.svm import SVC 
 svm = SVC(kernel = 'rbf', C = 1) #C to improve model 
-#svm.fit(X_train, y_train) 
+svm.fit(X_train, y_train) 
 
 # Decision Tree
 from sklearn.tree import DecisionTreeClassifier 
@@ -48,29 +48,31 @@ dtree = DecisionTreeClassifier()
 
 from sklearn.ensemble import RandomForestClassifier
 rfc = RandomForestClassifier(1500)
-rfc.fit(X, y)
+rfc.fit(X_train, y_train)
 
 # Naive Bayes
 from sklearn.naive_bayes import GaussianNB 
 gnb = GaussianNB()
-#gnb.fit(X_train, y_train) 
+gnb.fit(X_train, y_train) 
 
 # Multiclass LDA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 mlda = LinearDiscriminantAnalysis()
-#mlda.fit(X_train, y_train)
+mlda.fit(X_train, y_train)
 
+classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda)]
+for classifier in classifiers :
+    ## Predicting the Test set results
+    # Change classifier object
+    print(classifier[0])
+    y_pred = classifier[1].predict(X_test)
+    tools.accuracy_test(y_test, y_pred)
+    print()
 
-## Predicting the Test set results
-# Change classifier object
-y_pred = rfc.predict(X_test)
 y_kaggle = rfc.predict(X_kaggle)
 
 ## Testing accuracy
-tools.accuracy_test(y_test, y_pred)
 cm = confusion_matrix(y_test, y_pred)
-
 
 ## Write .csv file
 tools.CSVOutput(y_kaggle, le)
-
