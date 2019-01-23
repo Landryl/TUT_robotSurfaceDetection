@@ -29,7 +29,7 @@ X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
 # KNN
 from sklearn.neighbors import KNeighborsClassifier
 knn = KNeighborsClassifier(5, p=2)
-#knn.fit(X_train, y_train) 
+knn.fit(X_train, y_train) 
 
 # Logistic Regression
 from sklearn.linear_model import LogisticRegression 
@@ -44,7 +44,7 @@ svm.fit(X_train, y_train)
 # Decision Tree
 from sklearn.tree import DecisionTreeClassifier 
 dtree = DecisionTreeClassifier()
-#dtree.fit(X_train, y_train)
+dtree.fit(X_train, y_train)
 
 from sklearn.ensemble import RandomForestClassifier
 rfc = RandomForestClassifier(1500)
