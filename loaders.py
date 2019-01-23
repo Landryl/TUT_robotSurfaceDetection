@@ -6,13 +6,23 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 
+def average_linearity(sample) :
+    y = [i for i in range(len(sample))]
+    A = np.vstack([sample, np.ones(len(sample))]).T
+    a, b = np.linalg.lstsq(A, y, rcond=-1)[0]
+    average_linearity = 0
+    for i in range(len(sample)) :
+        average_linearity += abs(sample[i] - a*i+b)
+#    print(average_linearity/len(sample))
+    return average_linearity/len(sample)
+
 #Processes the 3D input into a 2D one by computing the mean values of each signal
 def generate_values(X_raw, size):
     X = np.zeros((size, 40))
     for i in range(size):
         for j in range(10):
             X[i, j] = np.mean(X_raw[i, j])
-            X[i, j+10] = X_raw[i, j].max() - X_raw[i, j].min()
+            X[i, j+10] = average_linearity(X_raw[i,j])
             X[i, j+20] = X_raw[i, j].max()
             X[i, j+30] = X_raw[i, j].min()
     return X
