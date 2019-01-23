@@ -30,8 +30,12 @@ def generate_values(X_raw, size):
             X[i, j+30] = X_raw[i, j].min()
     return X
 
+<<<<<<< HEAD
 
 def load_for_train(test_size) :
+=======
+def load_for_train(test_size, extractor=generate_values) :
+>>>>>>> b07969f3536d88bdb298222e382651afd16e26fd
     dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
     X_raw = np.load("dataset/X_train_kaggle.npy")
     y = dataset.iloc[:, -1].values
@@ -39,13 +43,14 @@ def load_for_train(test_size) :
     le = LabelEncoder()
     y = le.fit_transform(y)
     
-    X = generate_values(X_raw, 1703)
+    X = extractor(X_raw, 1703)
 
     X, y = shuffle(X, y)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
 
     return (X_train, y_train, X_test, y_test, le)
 
+<<<<<<< HEAD
 
 def load_for_train_groups(test_size):
     dataset = pd.read_csv('dataset/groups.csv')
@@ -68,6 +73,9 @@ def load_for_train_groups(test_size):
     
 
 def load_for_kaggle() :
+=======
+def load_for_kaggle(extractor=generate_values) :
+>>>>>>> b07969f3536d88bdb298222e382651afd16e26fd
     dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
     X_raw = np.load("dataset/X_train_kaggle.npy")
     y = dataset.iloc[:, -1].values
@@ -75,11 +83,11 @@ def load_for_kaggle() :
     le = LabelEncoder()
     y = le.fit_transform(y)
 
-    X = generate_values(X_raw, 1703)
+    X = extractor(X_raw, 1703)
 
     X, y = shuffle(X, y)
 
     X_kaggle_raw = np.load("dataset/X_test_kaggle.npy")
-    X_kaggle = generate_values(X_kaggle_raw, 1705)
+    X_kaggle = extractor(X_kaggle_raw, 1705)
 
     return (X, y, X_kaggle, le)
