@@ -26,7 +26,7 @@ training_labels = pd.read_csv("dataset/y_train_final_kaggle.csv").iloc[:,-1]
 
 i = 0
 for data in range(training_data.size):
-    fig, (ax0, ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9) = plt.subplots(10, sharey=True)
+    fig, (ax0, ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9) = plt.subplots(10, sharex=True, figsize=(20, 20))
     ax0.plot(training_data[data][0], 'r')
     ax0.set_title(training_labels.at[data])
     ax1.plot(training_data[data][1], 'r')
