@@ -70,9 +70,9 @@ def load_for_train_groups(test_size, extractor=generate_values):
     unique2, counts2 = np.unique(group2, return_counts=True)
 
 
-    print(np.asarray((unique1, counts1)).T)
-    print()
-    print(np.asarray((unique2, counts2)).T)
+#    print(np.asarray((unique1, counts1)).T)
+#    print()
+#    print(np.asarray((unique2, counts2)).T)
 
     
     return (X_train, y_train, X_test, y_test, le)
