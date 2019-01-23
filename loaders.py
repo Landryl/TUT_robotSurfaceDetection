@@ -47,7 +47,7 @@ def load_for_train(test_size, extractor=generate_values) :
     return (X_train, y_train, X_test, y_test, le)
 
 
-def load_for_train_groups(test_size):
+def load_for_train_groups(test_size, extractor=generate_values):
     dataset = pd.read_csv('dataset/groups.csv')
     X_raw = np.load("dataset/X_train_kaggle.npy")
     y = dataset.iloc[:, -1].values
@@ -56,7 +56,7 @@ def load_for_train_groups(test_size):
     le = LabelEncoder()
     y = le.fit_transform(y)
     
-    X = generate_values(X_raw, 1703)
+    X = extractor(X_raw, 1703)
     
     rs = ShuffleSplit(n_splits=1, test_size=test_size)
     
