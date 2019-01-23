@@ -38,7 +38,7 @@ lr.fit(X_train, y_train)
 
 # SVM 
 from sklearn.svm import SVC 
-svm = SVC(kernel = 'rbf', C = 1) #C to improve model 
+svm = SVC(kernel = 'linear', C = 1) #C to improve model 
 svm.fit(X_train, y_train) 
 
 # Decision Tree
@@ -47,7 +47,7 @@ dtree = DecisionTreeClassifier()
 dtree.fit(X_train, y_train)
 
 from sklearn.ensemble import RandomForestClassifier
-rfc = RandomForestClassifier(1500)
+rfc = RandomForestClassifier(2000)
 rfc.fit(X_train, y_train)
 
 # Naive Bayes
