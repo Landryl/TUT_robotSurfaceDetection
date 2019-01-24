@@ -30,6 +30,21 @@ def generate_values(X_raw, size):
             X[i, j+30] = X_raw[i, j].min()
     return X
 
+def load_for_train(test_size, extractor=generate_values) :
+    dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
+    X_raw = np.load("dataset/X_train_kaggle.npy")
+    y = dataset.iloc[:, -1].values
+
+    le = LabelEncoder()
+    y = le.fit_transform(y)
+
+    X = extractor(X_raw, 1703)
+
+    X, y = shuffle(X, y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
+
+    return (X_train, y_train, X_test, y_test, le)
+
 
 def load_for_train_groups(test_size, extractor=generate_values):
     dataset = pd.read_csv('dataset/groups.csv')
