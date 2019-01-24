@@ -80,7 +80,7 @@ for train_index, test_index in indices_generator:
     bc.fit(X_train, y_train)
 
     # Extra Tree
-    etc = ExtraTreesClassifier()
+    etc = ExtraTreesClassifier(500)
     etc.fit(X_train, y_train)
     
     classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc)]
