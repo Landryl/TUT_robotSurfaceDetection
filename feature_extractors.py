@@ -31,6 +31,11 @@ def deviationer_plus(X_raw, size) :
             X[i, j+30] = X_raw[i, j].min()
     return X
 
+def get_all_extractors() :
+    return [('raveller', raveller),
+            ('averager', averager),
+            ('deviationer', deviationer),
+            ('deviationer_plus', deviationer_plus)]
 
 def features_extractors_benchmark() :
     import loaders
