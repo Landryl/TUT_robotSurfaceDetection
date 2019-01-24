@@ -93,8 +93,8 @@ for train_index, test_index in indices_generator:
         print()
      
 ## Fitting and predicting for real test samples
-gnb.fit(X, y)
-y_kaggle = gnb.predict(X_kaggle)
+etc.fit(X, y)
+y_kaggle = etc.predict(X_kaggle)
 
 ## Write .csv file
 tools.CSVOutput(y_kaggle, le)
