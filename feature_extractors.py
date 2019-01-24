@@ -43,7 +43,7 @@ def features_extractors_benchmark() :
                   ('deviationer_plus', deviationer_plus)]
 
     for extractor in extractors :
-        X_train, y_train, X_test, y_test, le = loaders.load_for_train_groups(0.20, extractor[1])
+        X_train, y_train, X_test, y_test, le = loaders.load_for_train(0.20, extractor[1])
         lda = LinearDiscriminantAnalysis()
         lda.fit(X_train, y_train)
         y_pred = lda.predict(X_test)
