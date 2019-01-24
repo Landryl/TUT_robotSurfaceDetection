@@ -41,7 +41,7 @@ for train_index, test_index in indices_generator:
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
     
-    tools.print_train_test_repartition(dataset, train_index, test_index)
+    #tools.print_train_test_repartition(dataset, train_index, test_index)
 
     # KNN
     knn = KNeighborsClassifier(5, p=2)
