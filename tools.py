@@ -1,6 +1,7 @@
 from math import pi, atan, atan2, asin
 import numpy as np
 from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
 
 # Maths
 
@@ -34,7 +35,6 @@ def accuracy_test(y_test, y_pred):
     accuracy = accuracy_score(y_test, y_pred)
     print('Accuracy: {:.2f}'.format(accuracy))
 
-
 #Creates .cvs output file
 def CSVOutput(y_kaggle, labelencoder):
     output = labelencoder.inverse_transform(y_kaggle)
@@ -55,7 +55,6 @@ def print_total_groups(dataset):
     print("Total data (group_number - counts - labels):\n", np.asarray((total_group_numbers, total_counts, total_labels)).T)
     print()
     
-    
 # Printing groups repartition in test and train data
 def print_train_test_repartition(dataset, train_index, test_index):
     groups_labeled = dataset.iloc[:, [1,2]].values
@@ -66,5 +65,45 @@ def print_train_test_repartition(dataset, train_index, test_index):
 
     print("Training data (labels - count):\n", np.asarray((train_group_numbers, train_counts)).T)
     print()
-    print("Training data (labels - count):\n", np.asarray((test_group_numbers, test_counts)).T)
+    print("Testing data (labels - count):\n", np.asarray((test_group_numbers, test_counts)).T)
     print()
+
+# Print cv
+def plot_cv_indices(cv, X, y, group, ax, n_splits, lw=15):
+    """Create a sample plot for indices of a cross-validation object."""
+    
+    cmap_data = plt.cm.Paired
+    cmap_data2 = plt.cm.tab20c
+    cmap_cv = plt.cm.coolwarm
+    
+    indices = np.lexsort((group, y))
+    group = group[indices]   
+    X = X[indices]
+    y = y[indices]    
+
+    # Generate the training/testing visualizations for each CV split
+    for ii, (tr, tt) in enumerate(cv.split(X=X, y=y, groups=group)):
+        # Fill in indices with the training/test groups
+        indices = np.array([np.nan] * len(X))
+        indices[tt] = 1
+        indices[tr] = 0
+
+        # Visualize the results
+        ax.scatter(range(len(indices)), [ii + .5] * len(indices),
+                   c=indices, marker='_', lw=lw, cmap=cmap_cv,
+                   vmin=-.2, vmax=1.2)
+
+    # Plot the data classes and groups at the end
+    ax.scatter(range(len(X)), [ii + 1.5] * len(X),
+               c=y, marker='_', lw=lw, cmap=cmap_data)
+
+    ax.scatter(range(len(X)), [ii + 2.5] * len(X),
+               c=group, marker='_', lw=lw, cmap=cmap_data2)
+
+    # Formatting
+    yticklabels = list(range(n_splits)) + ['class', 'group']
+    ax.set(yticks=np.arange(n_splits+2) + .5, yticklabels=yticklabels,
+           xlabel='Sample index', ylabel="CV iteration",
+           ylim=[n_splits+2.2, -.2])
+    ax.set_title('{}'.format(type(cv).__name__), fontsize=15)
+    return ax
