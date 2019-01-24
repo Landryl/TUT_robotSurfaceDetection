@@ -9,6 +9,8 @@ from sklearn.model_selection import GroupShuffleSplit
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import ShuffleSplit
 
+import tools
+
 def average_linearity(sample) :
     y = [i for i in range(len(sample))]
     A = np.vstack([sample, np.ones(len(sample))]).T
@@ -51,15 +53,20 @@ def load_for_train_groups(test_size, extractor=generate_values):
     X_raw = np.load("dataset/X_train_kaggle.npy")
     y = dataset.iloc[:, -1].values
     groups = dataset.iloc[:, 1].values
+
+    fig, ax = plt.subplots(figsize=(10, 5))
     
     le = LabelEncoder()
     y = le.fit_transform(y)
     
     X = extractor(X_raw, 1703)
     
-    rs = ShuffleSplit(n_splits=9, test_size=test_size)
-    #rs = GroupShuffleSplit(n_splits=4, test_size=test_size)
-    #rs = StratifiedKFold(n_splits=5)
+    n_splits = 4
+    #rs = ShuffleSplit(n_splits, test_size=test_size)
+    rs = GroupShuffleSplit(n_splits)#, test_size=test_size)
+    #rs = StratifiedKFold(n_splits)
+    
+    tools.plot_cv_indices(rs, X, y, groups, ax, n_splits)
 
     return (rs.split(X, y, groups), le)
     
