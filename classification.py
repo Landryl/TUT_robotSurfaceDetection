@@ -17,7 +17,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression 
 from sklearn.svm import SVC 
 from sklearn.tree import DecisionTreeClassifier 
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, BaggingClassifier
 from sklearn.naive_bayes import GaussianNB 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
@@ -74,8 +74,12 @@ for train_index, test_index in indices_generator:
     # Gradient Boosting
     gbc = GradientBoostingClassifier()
     gbc.fit(X_train, y_train)
+
+    # Bagging
+    bc = BaggingClassifier()
+    bc.fit(X_train, y_train)
     
-    classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc)]
+    classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc)]
     for classifier in classifiers :
         ## Predicting the Test set results
         # Change classifier object
