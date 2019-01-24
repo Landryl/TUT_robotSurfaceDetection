@@ -17,7 +17,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression 
 from sklearn.svm import SVC 
 from sklearn.tree import DecisionTreeClassifier 
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, BaggingClassifier, ExtraTreesClassifier
 from sklearn.naive_bayes import GaussianNB 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
@@ -30,7 +30,7 @@ dataset = pd.read_csv('dataset/groups.csv')
 test_size = 0.20
 i = 0
 
-extractor = feature_extractors.deviationer
+extractor = feature_extractors.deviationer_plus
 indices_generator, le = loaders.load_for_train_groups(test_size, extractor)
 X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
 
@@ -70,8 +70,20 @@ for train_index, test_index in indices_generator:
     # Multiclass LDA
     mlda = LinearDiscriminantAnalysis()
     mlda.fit(X_train, y_train)
+
+    # Gradient Boosting
+    gbc = GradientBoostingClassifier()
+    gbc.fit(X_train, y_train)
+
+    # Bagging
+    bc = BaggingClassifier()
+    bc.fit(X_train, y_train)
+
+    # Extra Tree
+    etc = ExtraTreesClassifier(500)
+    etc.fit(X_train, y_train)
     
-    classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda)]
+    classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc)]
     for classifier in classifiers :
         ## Predicting the Test set results
         # Change classifier object
