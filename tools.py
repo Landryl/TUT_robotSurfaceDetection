@@ -66,5 +66,5 @@ def print_train_test_repartition(dataset, train_index, test_index):
 
     print("Training data (labels - count):\n", np.asarray((train_group_numbers, train_counts)).T)
     print()
-    print("Training data (labels - count):\n", np.asarray((test_group_numbers, test_counts)).T)
+    print("Testing data (labels - count):\n", np.asarray((test_group_numbers, test_counts)).T)
     print()
