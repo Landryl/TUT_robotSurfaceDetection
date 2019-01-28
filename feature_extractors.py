@@ -1,5 +1,41 @@
 import numpy as np
+import math
+import matplotlib.pyplot as plt
 import tools
+
+# Usefull functions
+
+def is_croissant(array, treshold) :
+    minimum_tolerated = array[0] - treshold
+    local = array[0]
+    i = 1
+    while local > minimum_tolerated and i < len(array) :
+        if (local - minimum_tolerated) > treshold :
+            minimum_tolerated = local - treshold
+        local = array[i]
+        i+=1
+    return 1 if i == len(array) else 0
+
+def is_decroissant(array, treshold) :
+    maximum_tolerated = array[0] + treshold
+    local = array[0]
+    i = 1
+    while local < maximum_tolerated and i < len(array) :
+        if (maximum_tolerated - local) > treshold :
+            maximum_tolerated = local + treshold
+        local = array[i]
+        i+=1
+    return 1 if i == len(array) else 0
+
+def is_monotonous(array, treshold) :
+    #print( 1 if is_decroissant(array, treshold) or is_croissant(array, treshold) else 0 )
+    #plt.plot(array)
+    #plt.show()
+    return 1 if is_decroissant(array, treshold) or is_croissant(array, treshold) else 0
+
+        
+
+# Extractors
 
 def raveller(X_raw, size) :
     X = np.zeros((size, 1280))
@@ -32,6 +68,18 @@ def deviationer_plus(X_raw, size) :
             X[i, j+30] = X_raw[i, j].min()
     return X
 
+def deviationer_monotonous(X_raw, size) :
+    X = np.zeros((size, 50))
+    for i in range(size) :
+        for j in range(10) :
+            X[i, j] = np.mean(X_raw[i, j])
+            X[i, j+10] = np.std(X_raw[i, j])
+            X[i, j+20] = X_raw[i, j].max()
+            X[i, j+30] = X_raw[i, j].min()
+            treshold = ( X_raw[i, j].max() - X_raw[i, j].min() ) / 4
+            X[i, j+40] = is_monotonous(X_raw[i, j], treshold)
+    return X
+
 def euler_angles(X_raw, size):
     for i in range(128):
         for j in range(size):
@@ -62,6 +110,7 @@ def get_all_extractors() :
             ('averager', averager),
             ('deviationer', deviationer),
             ('deviationer_plus', deviationer_plus),
+            ('deviationer_monotonous', deviationer_monotonous),
             ('euler_angles', euler_angles)]
 
 def features_extractors_benchmark() :
@@ -72,6 +121,7 @@ def features_extractors_benchmark() :
                   ('averager', averager),
                   ('deviationer', deviationer),
                   ('deviationer_plus', deviationer_plus),
+                  ('deviationer_monotonous', deviationer_monotonous),
                   ('euler_angles', euler_angles)]
 
     for extractor in extractors :
