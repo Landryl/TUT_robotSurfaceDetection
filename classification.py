@@ -34,6 +34,8 @@ extractor = feature_extractors.deviationer_plus
 indices_generator, le = loaders.load_for_train_groups(test_size, extractor)
 X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
 
+print_feature_importance = 0
+
 ## Benchmarking classifiers over different split possibilities
 for train_index, test_index in indices_generator:
     print("\nSplit {}\n".format(i))
@@ -82,7 +84,22 @@ for train_index, test_index in indices_generator:
     # Extra Tree
     etc = ExtraTreesClassifier(1000, max_features=2, max_depth=None, min_samples_split=2)
     etc.fit(X_train, y_train)
-    
+
+    if print_feature_importance :
+        importances = etc.feature_importances_
+        std = np.std([tree.feature_importances_ for tree in etc.estimators_],
+             axis=0)
+        print(importances)
+        indices = [i for i in range(len(importances))]
+
+        plt.figure()
+        plt.title("Feature importances")
+        plt.bar(range(X_train.shape[1]), importances[indices],
+                color="r", yerr=std[indices], align="center")
+        plt.xticks(range(X_train.shape[1]), indices)
+        plt.xlim([-1, X_train.shape[1]])
+        plt.show()
+
     classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc)]
     for classifier in classifiers :
         ## Predicting the Test set results
