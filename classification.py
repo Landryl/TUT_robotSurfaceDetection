@@ -30,11 +30,11 @@ dataset = pd.read_csv('dataset/groups.csv')
 test_size = 0.20
 i = 0
 
-extractor = feature_extractors.deviationer_plus
+extractor = feature_extractors.euler_angles
 indices_generator, le = loaders.load_for_train_groups(test_size, extractor)
 X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
 
-print_feature_importance = 0
+print_feature_importance = int(input("Afficher importance des features ? (0 ou 1) : "))
 
 ## Benchmarking classifiers over different split possibilities
 for train_index, test_index in indices_generator:
