@@ -81,29 +81,29 @@ def deviationer_monotonous(X_raw, size) :
     return X
 
 def euler_angles(X_raw, size):
-    for i in range(128):
-        for j in range(size):
-            X_raw[j][0][i], X_raw[j][1][i], X_raw[j][2][i] = tools.quaternionToEulerAngles(X_raw[j][0][i], X_raw[j][1][i], X_raw[j][2][i], X_raw[j][3][i])
-            for k in range(3, 9):
-                X_raw[j][k][i] = X_raw[j][k + 1][i]
-            np.delete(X_raw[j], 9, 0)
-    X = np.zeros((size, 36))
-    for i in range(size) :
-        for j in range(9) :
-            X[i, j] = np.mean(X_raw[i, j])
-            X[i, j+9] = np.std(X_raw[i, j])
-            X[i, j+18] = X_raw[i, j].max()
-            X[i, j+27] = X_raw[i, j].min()
-    return X
-#    X_quater = deviationer_plus(X_raw, size)
+#    for i in range(128):
+#        for j in range(size):
+#            X_raw[j][0][i], X_raw[j][1][i], X_raw[j][2][i] = tools.quaternionToEulerAngles(X_raw[j][0][i], X_raw[j][1][i], X_raw[j][2][i], X_raw[j][3][i])
+#            for k in range(3, 9):
+#                X_raw[j][k][i] = X_raw[j][k + 1][i]
+#            np.delete(X_raw[j], 9, 0)
 #    X = np.zeros((size, 36))
-#    for i in range(size): 
-#        euler = tools.quaternionToEulerAngles(X_quater[i][0], X_quater[i][1], X_quater[i][2], X_quater[i][3])
-#        for j in range(3):
-#            X[i][j] = euler[j]
-#        for j in range(3, 9):
-#            X[i][j] = X_quater[i][j + 1]
+#    for i in range(size) :
+#        for j in range(9) :
+#            X[i, j] = np.mean(X_raw[i, j])
+#            X[i, j+9] = np.std(X_raw[i, j])
+#            X[i, j+18] = X_raw[i, j].max()
+#            X[i, j+27] = X_raw[i, j].min()
 #    return X
+    X_quater = deviationer_plus(X_raw, size)
+    X = np.zeros((size, 36))
+    for i in range(size): 
+        euler = tools.quaternionToEulerAngles(X_quater[i][0], X_quater[i][1], X_quater[i][2], X_quater[i][3])
+        for j in range(3):
+            X[i][j] = euler[j]
+        for j in range(3, 27):
+            X[i][j] = X_quater[i][j + 1]
+    return X
 
 def get_all_extractors() :
     return [('raveller', raveller),
