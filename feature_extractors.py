@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import tools
 
 # Usefull functions
 
@@ -79,23 +80,35 @@ def deviationer_monotonous(X_raw, size) :
             X[i, j+40] = is_monotonous(X_raw[i, j], treshold)
     return X
 
+def euler_angles(X_raw, size):
+    X_quater = deviationer_plus(X_raw, size)
+    X = np.zeros((size, 36))
+    for i in range(size): 
+        euler = tools.quaternionToEulerAngles(X_quater[i][0], X_quater[i][1], X_quater[i][2], X_quater[i][3])
+        for j in range(3):
+            X[i][j] = euler[j]
+        for j in range(3, 9):
+            X[i][j] = X_quater[i][j + 1]
+    return X
+
 def get_all_extractors() :
     return [('raveller', raveller),
             ('averager', averager),
             ('deviationer', deviationer),
             ('deviationer_plus', deviationer_plus),
-            ('deviationer_monotonous', deviationer_monotonous)]
+            ('deviationer_monotonous', deviationer_monotonous),
+            ('euler_angles', euler_angles)]
 
 def features_extractors_benchmark() :
     import loaders
-    import tools
     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
     extractors = [('raveller', raveller), 
                   ('averager', averager),
                   ('deviationer', deviationer),
                   ('deviationer_plus', deviationer_plus),
-                  ('deviationer_monotonous', deviationer_monotonous)]
+                  ('deviationer_monotonous', deviationer_monotonous),
+                  ('euler_angles', euler_angles)]
 
     for extractor in extractors :
         X_train, y_train, X_test, y_test, le = loaders.load_for_train(0.20, extractor[1])
