@@ -57,7 +57,8 @@ def features_extractors_benchmark() :
     extractors = [('raveller', raveller), 
                   ('averager', averager),
                   ('deviationer', deviationer),
-                  ('deviationer_plus', deviationer_plus)]
+                  ('deviationer_plus', deviationer_plus),
+                  ('euler_angles', euler_angles)]
 
     for extractor in extractors :
         X_train, y_train, X_test, y_test, le = loaders.load_for_train(0.20, extractor[1])
