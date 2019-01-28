@@ -30,7 +30,7 @@ dataset = pd.read_csv('dataset/groups.csv')
 test_size = 0.20
 i = 0
 
-extractor = feature_extractors.deviationer_plus
+extractor = feature_extractors.euler_angles
 indices_generator, le = loaders.load_for_train_groups(test_size, extractor)
 X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
 
