@@ -101,7 +101,7 @@ def euler_angles(X_raw, size):
         euler = tools.quaternionToEulerAngles(X_quater[i][0], X_quater[i][1], X_quater[i][2], X_quater[i][3])
         for j in range(3):
             X[i][j] = euler[j]
-        for j in range(3, 27):
+        for j in range(3, 36):
             X[i][j] = X_quater[i][j + 1]
     return X
 
