@@ -107,6 +107,7 @@ for train_index, test_index in indices_generator:
         print(classifier[0])
         y_pred = classifier[1].predict(X_test)
         tools.accuracy_test(y_test, y_pred)
+        tools.accuracy_average(classifier[1], X_test, y_test, 5)
         print()
      
 ## Fitting and predicting for real test samples

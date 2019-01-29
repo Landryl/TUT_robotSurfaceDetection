@@ -1,6 +1,7 @@
 from math import pi, atan, atan2, asin
 import numpy as np
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score
 import matplotlib.pyplot as plt
 
 # Maths
@@ -34,6 +35,10 @@ def accuracy_test(y_test, y_pred):
     print('Misclassified samples: {}'.format(count_misclassified))
     accuracy = accuracy_score(y_test, y_pred)
     print('Accuracy: {:.2f}'.format(accuracy))
+
+def accuracy_average(classifier, X, y, nbTests) :
+    score = cross_val_score(classifier, X, y, cv=nbTests)
+    print("Score : ", score, " - ", np.mean(score))
 
 #Creates .cvs output file
 def CSVOutput(y_kaggle, labelencoder):
