@@ -11,7 +11,7 @@ from sklearn.metrics import confusion_matrix
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier, GradientBoostingClassifier
 from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import GridSearchCV, cross_val_score
+from sklearn.model_selection import GridSearchCV, cross_val_score, RandomizedSearchCV
 
 import feature_extractors
 
@@ -39,32 +39,40 @@ boost_param_grid = {'n_estimators': [10, 30, 100, 300, 1000],
 
 
 ## Fitting and printing out best score and params
-#rf_est = RandomForestClassifier()
-#rf_gs_cv = GridSearchCV(rf_est, rf_param_grid, cv=3).fit(X, y)
-#print("RF ", rf_gs_cv.best_score_, rf_gs_cv.best_params_)
+print("Fitting models")
+rf_est = RandomForestClassifier()
+rf_gs_cv = GridSearchCV(rf_est, rf_param_grid, cv=3).fit(X, y)
+print("RF grid search", rf_gs_cv.best_score_, rf_gs_cv.best_params_)
+rf_rs_cv = RandomizedSearchCV(rf_est, param_distributions=rf_param_grid, cv=4, verbose=1).fit(X, y, groups=groups)
+print("RF randomized search", rf_rs_cv.best_score_, rf_rs_cv.best_params_)
 
-#boost_est = GradientBoostingClassifier()
-#boost_gs_cv = GridSearchCV(boost_est, boost_param_grid, cv=3).fit(X, y)
-#print("Boost ", boost_gs_cv.best_score_, boost_gs_cv.best_params_)
+boost_est = GradientBoostingClassifier()
+boost_gs_cv = GridSearchCV(boost_est, boost_param_grid, cv=3).fit(X, y)
+print("Boost grid search", boost_gs_cv.best_score_, boost_gs_cv.best_params_)
+boost_rs_cv = RandomizedSearchCV(boost_est, param_distributions=boost_param_grid, cv=4, verbose=1).fit(X, y, groups=groups)
+print("Boost randomized search", boost_rs_cv.best_score_, boost_rs_cv.best_params_)
 
 et = ExtraTreesClassifier()
 et_gs_cv = GridSearchCV(estimator=et, param_grid=et_param_grid, cv=3).fit(X, y, groups=groups)
-print("ET ", et_gs_cv.best_score_, et_gs_cv.best_params_)
+print("ET grid search", et_gs_cv.best_score_, et_gs_cv.best_params_)
+et_rs_cv = RandomizedSearchCV(et, param_distributions=et_param_grid, cv=4, verbose=1).fit(X, y, groups=groups)
+print("ET randomized search", et_rs_cv.best_score_, et_rs_cv.best_params_)
 print('\n')
 
 
 ## Check score with optimised params
-#clf_rf = RandomForestClassifier(n_estimators=rf_gs_cv.best_params_['n_estimators'])
-#scores = cross_val_score(clf_rf, X, y, cv=3)
-#print("RF ", scores.mean())
+print("Score test with otpimised params")
+clf_rf = RandomForestClassifier(n_estimators=rf_gs_cv.best_params_['n_estimators'])
+scores = cross_val_score(clf_rf, X, y, cv=3)
+print("RF ", scores.mean())
 
-#clf_boost = GradientBoostingClassifier(n_estimators=boost_gs_cv.best_params_['n_estimators'],
-#                                 max_depth=boost_gs_cv.best_params_['max_depth'],
-#                                 min_samples_leaf=boost_gs_cv.best_params_['min_samples_leaf'])
-#scores = cross_val_score(clf_boost, X, y, cv=3)
-#print("Boost ", scores.mean())
+clf_boost = GradientBoostingClassifier(n_estimators=boost_gs_cv.best_params_['n_estimators'],
+                                 max_depth=boost_gs_cv.best_params_['max_depth'],
+                                 min_samples_leaf=boost_gs_cv.best_params_['min_samples_leaf'])
+scores = cross_val_score(clf_boost, X, y, cv=3)
+print("Boost ", scores.mean())
 
-clf_et = ExtraTreesClassifier(n_estimators=et_gs_cv.best_params_['n_estimators'])
+clf_et = ExtraTreesClassifier(n_estimators=et_rs_cv.best_params_['n_estimators'])
 scores = cross_val_score(clf_et, X, y, cv=3, groups=groups)
 print("ET ", scores.mean())
 
