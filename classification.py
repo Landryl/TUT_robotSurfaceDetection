@@ -51,7 +51,7 @@ for train_index, test_index in indices_generator:
     
     # Logistic Regression
     lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
-    lr.fit(X_train, y_train) 
+#    lr.fit(X_train, y_train) 
     
     # SVM 
     svm = SVC(kernel = 'linear', C = 1) #C to improve model 
@@ -100,7 +100,7 @@ for train_index, test_index in indices_generator:
         plt.xlim([-1, X_train.shape[1]])
         plt.show()
 
-    classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc)]
+    classifiers = [('knn', knn), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc)]
     for classifier in classifiers :
         ## Predicting the Test set results
         # Change classifier object
