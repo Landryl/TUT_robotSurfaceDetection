@@ -116,6 +116,7 @@ def get_all_extractors() :
 def features_extractors_benchmark() :
     import loaders
     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+    from sklearn.ensemble import ExtraTreesClassifier
 
     extractors = [('raveller', raveller), 
                   ('averager', averager),
@@ -127,8 +128,20 @@ def features_extractors_benchmark() :
     for extractor in extractors :
         X_train, y_train, X_test, y_test, le = loaders.load_for_train(0.20, extractor[1])
         lda = LinearDiscriminantAnalysis()
+        etc = ExtraTreesClassifier(1000)
+
         lda.fit(X_train, y_train)
-        y_pred = lda.predict(X_test)
+        etc.fit(X_train, y_train)
+
         print(extractor[0])
+        print("LDA")
+        y_pred = lda.predict(X_test)
+        tools.accuracy_test(y_test, y_pred)
+        print("ETC")
+        y_pred = etc.predict(X_test)
         tools.accuracy_test(y_test, y_pred)
         print()
+
+if __name__ == "__main__":
+   # stuff only to run when not called via 'import' here
+   features_extractors_benchmark()
