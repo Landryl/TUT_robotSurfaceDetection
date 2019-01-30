@@ -15,11 +15,14 @@ import pandas as pd
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression 
-from sklearn.svm import SVC 
+from sklearn.svm import SVC, LinearSVC
 from sklearn.tree import DecisionTreeClassifier 
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, BaggingClassifier, ExtraTreesClassifier
 from sklearn.naive_bayes import GaussianNB 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+from sklearn.pipeline import Pipeline
+from sklearn.feature_selection import SelectFromModel
 
 import loaders
 import tools
@@ -85,6 +88,12 @@ for train_index, test_index in indices_generator:
     etc = ExtraTreesClassifier(1000, max_features=2, max_depth=None, min_samples_split=2)
     etc.fit(X_train, y_train)
 
+    etc_pipe = Pipeline([
+        ('feature_selection', SelectFromModel(ExtraTreesClassifier(1000))),
+        ('classification', ExtraTreesClassifier(1000, max_features=2, max_depth=None, min_samples_split=2))
+    ])
+    etc_pipe.fit(X_train, y_train)
+
     if print_feature_importance :
         importances = etc.feature_importances_
         std = np.std([tree.feature_importances_ for tree in etc.estimators_],
@@ -100,7 +109,7 @@ for train_index, test_index in indices_generator:
         plt.xlim([-1, X_train.shape[1]])
         plt.show()
 
-    classifiers = [('knn', knn), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc)]
+    classifiers = [('knn', knn), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc), ('etc_pipe', etc_pipe)]
     for classifier in classifiers :
         ## Predicting the Test set results
         # Change classifier object
