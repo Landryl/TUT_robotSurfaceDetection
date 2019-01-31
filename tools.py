@@ -27,17 +27,15 @@ def quaternionToEulerAngles(x, y, z, w) :
     return (roll, pitch, yaw)
 
 def convolution_smooth(array) :
-    plt.plot(array)
-    plt.show()
     r = np.convolve(array, [6/66, 24/66, 36/66, 24/66, 6/66], mode='valid')
-    plt.plot(r)
-    plt.show()
     return r
 
 # Utilities for models
 
 #Prints accuracy values of models 
 def accuracy_test(y_test, y_pred):
+    print("y_test", (y_test.size))
+    print("y_pred", (y_pred.size))
     count_misclassified = (y_test != y_pred).sum()
     print('Misclassified samples: {}'.format(count_misclassified))
     accuracy = accuracy_score(y_test, y_pred)
