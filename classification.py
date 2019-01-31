@@ -28,6 +28,13 @@ import loaders
 import tools
 import feature_extractors
 
+XGB_installed = 1
+
+try :
+    from xgboost import XGBClassifier
+except :
+    XGB_installed = 0
+
 
 dataset = pd.read_csv('dataset/groups.csv')
 test_size = 0.20
@@ -94,6 +101,10 @@ for train_index, test_index in indices_generator:
     ])
     etc_pipe.fit(X_train, y_train)
 
+    if(XGB_installed) :
+        xgb = XGBClassifier()
+        xgb.fit(X_train, y_train)
+
     if print_feature_importance :
         importances = etc.feature_importances_
         std = np.std([tree.feature_importances_ for tree in etc.estimators_],
@@ -110,6 +121,8 @@ for train_index, test_index in indices_generator:
         plt.show()
 
     classifiers = [('knn', knn), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc), ('etc_pipe', etc_pipe)]
+    if XGB_installed :
+        classifiers.append(('xgb', xgb))
     for classifier in classifiers :
         ## Predicting the Test set results
         # Change classifier object
