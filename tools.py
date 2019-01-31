@@ -34,6 +34,8 @@ def convolution_smooth(array) :
 
 #Prints accuracy values of models 
 def accuracy_test(y_test, y_pred):
+    print("y_test", (y_test.size))
+    print("y_pred", (y_pred.size))
     count_misclassified = (y_test != y_pred).sum()
     print('Misclassified samples: {}'.format(count_misclassified))
     accuracy = accuracy_score(y_test, y_pred)
