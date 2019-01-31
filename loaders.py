@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.signal import savgol_filter
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.utils import shuffle
@@ -58,6 +59,10 @@ def load_for_train_groups(test_size, extractor=generate_values):
     
     le = LabelEncoder()
     y = le.fit_transform(y)
+        
+    for i in range(1703):
+        for j in range(10):
+            X_raw[i][j] = savgol_filter(X_raw[i][j], 127, 1)
     
     X = extractor(X_raw, 1703)
     
