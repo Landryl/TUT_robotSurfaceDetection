@@ -31,6 +31,7 @@ import feature_extractors
 XGB_installed = 1
 
 try :
+    import xgboost as xgb
     from xgboost import XGBClassifier
 except :
     XGB_installed = 0
@@ -56,6 +57,7 @@ for train_index, test_index in indices_generator:
     #tools.print_train_test_repartition(dataset, train_index, test_index)
 
     # KNN
+    print("Training KNN")
     knn = KNeighborsClassifier(5, p=2)
     knn.fit(X_train, y_train) 
     
@@ -64,34 +66,42 @@ for train_index, test_index in indices_generator:
 #    lr.fit(X_train, y_train) 
     
     # SVM 
+    print("Training SVC")
     svm = SVC(kernel = 'linear', C = 1) #C to improve model 
     svm.fit(X_train, y_train) 
     
     # Decision Tree
+    print("Training DTree")
     dtree = DecisionTreeClassifier()
     dtree.fit(X_train, y_train)
     
     # Random Forest
+    print("Training RFC")
     rfc = RandomForestClassifier(1500)
     rfc.fit(X_train, y_train)
     
     # Naive Bayes
+    print("Training GNB")
     gnb = GaussianNB()
     gnb.fit(X_train, y_train) 
     
     # Multiclass LDA
+    print("Training LDA")
     mlda = LinearDiscriminantAnalysis()
     mlda.fit(X_train, y_train)
 
     # Gradient Boosting
+    print("Training GBC")
     gbc = GradientBoostingClassifier()
     gbc.fit(X_train, y_train)
 
     # Bagging
+    print("Training BC")
     bc = BaggingClassifier()
     bc.fit(X_train, y_train)
 
     # Extra Tree
+    print("Training ETC")
     etc = ExtraTreesClassifier(1000, max_features=2, max_depth=None, min_samples_split=2)
     etc.fit(X_train, y_train)
 
@@ -102,8 +112,23 @@ for train_index, test_index in indices_generator:
     etc_pipe.fit(X_train, y_train)
 
     if(XGB_installed) :
-        xgb = XGBClassifier()
-        xgb.fit(X_train, y_train)
+        print("Training XGB")
+        xgb_alg = XGBClassifier(learning_rate=0.1, n_estimators=140, max_depth=5,
+                            min_child_weight=3, gamma=0.2, subsample=0.6, colsample_bytree=1.0,
+                            objective='binary:logistic', nthread=4, scale_pos_weight=1, seed=27)
+
+        #print(" Start Feeding Data")
+        #cv_folds = 5
+        #early_stopping_rounds = 50
+        #xgb_param = xgb_alg.get_xgb_params()
+        #xgtrain = xgb.DMatrix(X_train, label=y_train)
+        ## xgtest = xgb.DMatrix(X_test.values, label=y_test.values)
+        #cvresult = xgb.cv(xgb_param, xgtrain, num_boost_round=xgb_alg.get_params()['n_estimators'], nfold=cv_folds,
+        #                  early_stopping_rounds=early_stopping_rounds)
+        #xgb_alg.set_params(n_estimators=cvresult.shape[0])
+        
+        #print(" Start Training")
+        xgb_alg.fit(X_train, y_train, eval_metric='auc')
 
     if print_feature_importance :
         importances = etc.feature_importances_
@@ -122,7 +147,7 @@ for train_index, test_index in indices_generator:
 
     classifiers = [('knn', knn), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc), ('etc_pipe', etc_pipe)]
     if XGB_installed :
-        classifiers.append(('xgb', xgb))
+        classifiers.append(('xgb', xgb_alg))
     for classifier in classifiers :
         ## Predicting the Test set results
         # Change classifier object
