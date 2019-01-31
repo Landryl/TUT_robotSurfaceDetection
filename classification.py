@@ -150,7 +150,6 @@ for train_index, test_index in indices_generator:
     if XGB_installed :
         classifiers.append(('xgb', xgb_alg))
     for classifier in classifiers :
-        break;
         ## Predicting the Test set results
         # Change classifier object
         print(classifier[0])
@@ -162,15 +161,14 @@ for train_index, test_index in indices_generator:
     print("Calling the EDVC")
     y_pred = voting.edvc([etc, rfc, gbc, xgb_alg], X_test)
     tools.accuracy_test(y_test, y_pred)
-    break;
      
 ## Fitting and predicting for real test samples
 etc.fit(X, y)
-rfc.fit(X, y)
-gbc.fit(X, y)
-xgb_alg.fit(X, y)
-#y_kaggle = etc.predict(X_kaggle)
-y_kaggle = voting.edvc([etc, rfc, gbc, xgb_alg], X_kaggle)
+#rfc.fit(X, y)
+#gbc.fit(X, y)
+#xgb_alg.fit(X, y)
+y_kaggle = etc.predict(X_kaggle)
+#y_kaggle = voting.edvc([etc, rfc, gbc, xgb_alg], X_kaggle)
 
 ## Write .csv file
 tools.CSVOutput(y_kaggle, le)
