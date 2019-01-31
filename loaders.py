@@ -60,10 +60,6 @@ def load_for_train_groups(test_size, extractor=generate_values):
     le = LabelEncoder()
     y = le.fit_transform(y)
         
-    for i in range(1703):
-        for j in range(10):
-            X_raw[i][j] = savgol_filter(X_raw[i][j], 127, 1)
-    
     X = extractor(X_raw, 1703)
     
     n_splits = 4
@@ -84,10 +80,6 @@ def load_for_kaggle(extractor=generate_values) :
     le = LabelEncoder()
     y = le.fit_transform(y)
     
-    for i in range(1703):
-        for j in range(10):
-            X_raw[i][j] = savgol_filter(X_raw[i][j], 127, 1)
-
     X = extractor(X_raw, 1703)
 
     X, y = shuffle(X, y)
