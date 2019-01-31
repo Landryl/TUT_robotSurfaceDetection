@@ -26,6 +26,13 @@ def quaternionToEulerAngles(x, y, z, w) :
 
     return (roll, pitch, yaw)
 
+def convolution_smooth(array) :
+    plt.plot(array)
+    plt.show()
+    r = np.convolve(array, [6/66, 24/66, 36/66, 24/66, 6/66], mode='valid')
+    plt.plot(r)
+    plt.show()
+    return r
 
 # Utilities for models
 
