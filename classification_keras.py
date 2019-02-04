@@ -1,13 +1,10 @@
 print("Importing librairies...")
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
-import keras
-from keras.models import Sequential
-from keras.layers import Dense
-
 import loaders
 import feature_extractors
 import tools
+import neural_networks
 
 print("Done.")
 
@@ -38,16 +35,7 @@ for train_index, test_index in indices_generator :
     print("▶ Building the neural network ◀")
     input_size = len(X_train[0])
     output_size = 9
-    hidden_layer_size = int((input_size + output_size) / 2)
-    print("Input size : {}".format(input_size))
-    print("Output size : {}".format(output_size))
-    print("Hidden layer size : {}".format(hidden_layer_size))
-
-    classifier = Sequential()
-    classifier.add(Dense(activation='relu', input_dim=input_size, units=hidden_layer_size, kernel_initializer='uniform'))
-    classifier.add(Dense(activation='relu', units=hidden_layer_size, kernel_initializer='uniform'))
-    classifier.add(Dense(activation='softmax', units=output_size, kernel_initializer='uniform'))
-    classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    classifier = neural_networks.basic(input_size, output_size)
 
     print("▶ Training ◀")
     classifier.fit(X_train, y_train, batch_size=10, epochs=100)    
