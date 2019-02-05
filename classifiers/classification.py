@@ -24,10 +24,9 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.pipeline import Pipeline
 from sklearn.feature_selection import SelectFromModel
 
-import loaders
-import tools
-import feature_extractors
-import voting
+from utilities import loaders
+from utilities import tools
+from utilities import feature_extractors
 
 XGB_installed = 1
 
