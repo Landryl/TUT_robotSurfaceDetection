@@ -39,7 +39,7 @@ for train_index, test_index in indices_generator :
     classifier = neural_networks.convolutional(input_size, output_size)
 
     print("▶ Training ◀")
-    classifier.fit(X_train, y_train, batch_size=10, epochs=25)    
+    classifier.fit(X_train, y_train, batch_size=10, epochs=50)    
 
     print("▶ Evaluating ◀")
     y_pred = lb.inverse_transform(classifier.predict(X_test), 0.5)
