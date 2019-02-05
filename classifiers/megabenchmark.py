@@ -21,9 +21,9 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier,
 from sklearn.naive_bayes import GaussianNB 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
-import loaders
-import tools
-import feature_extractors
+from utilities import loaders
+from utilities import tools
+from utilities import feature_extractors
 
 
 dataset = pd.read_csv('dataset/groups.csv')

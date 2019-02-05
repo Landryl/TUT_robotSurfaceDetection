@@ -27,6 +27,7 @@ from sklearn.feature_selection import SelectFromModel
 from utilities import loaders
 from utilities import tools
 from utilities import feature_extractors
+import voting
 
 XGB_installed = 1
 
