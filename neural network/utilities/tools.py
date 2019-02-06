@@ -115,3 +115,10 @@ def plot_cv_indices(cv, X, y, group, ax, n_splits, lw=15):
            ylim=[n_splits+2.2, -.2])
     ax.set_title('{}'.format(type(cv).__name__), fontsize=15)
     return ax
+
+def max_one_hot(array) :
+    r = []
+    for n in array :
+        i = np.argmax(n)
+        r.append([1 if j==i else 0 for j in range(len(n))])
+    return np.array(r)

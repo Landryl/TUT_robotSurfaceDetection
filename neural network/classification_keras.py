@@ -42,7 +42,7 @@ for train_index, test_index in indices_generator :
     classifier.fit(X_train, y_train, batch_size=10, epochs=25)
 
     print("▶ Evaluating ◀")
-    y_pred = lb.inverse_transform(classifier.predict(X_test), 0.5)
+    y_pred = lb.inverse_transform(tools.max_one_hot(classifier.predict(X_test)), 0.5)
     y_test = lb.inverse_transform(y_test, 0.5)
     tools.accuracy_test(y_test, y_pred)
 
