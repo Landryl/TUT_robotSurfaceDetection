@@ -36,10 +36,10 @@ for train_index, test_index in indices_generator :
     input_size = len(X_train[0])
     output_size = 9
     #classifier = neural_networks.basic(input_size, output_size)
-    classifier = neural_networks.convolutional(input_size, output_size)
+    classifier = neural_networks.convolutional2D(input_size, output_size)
 
     print("▶ Training ◀")
-    classifier.fit(X_train, y_train, batch_size=10, epochs=50)    
+    classifier.fit(X_train, y_train, batch_size=10, epochs=25)
 
     print("▶ Evaluating ◀")
     y_pred = lb.inverse_transform(classifier.predict(X_test), 0.5)
