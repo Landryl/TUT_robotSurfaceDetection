@@ -19,7 +19,7 @@ i = 0
 print("Loading dataset")
 
 extractor = feature_extractors.raveller
-indices_generatoa, le = loaders.load_for_train_groups(test_size, extractor)
+indices_generator, le = loaders.load_for_train_groups(test_size, extractor)
 
 print("Done.")
 

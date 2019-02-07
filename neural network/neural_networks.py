@@ -37,9 +37,9 @@ def convolutional2D(input_size, output_size) :
     ''' Convolutional network requires the raveller extractor + reshaped in (1, 10, 128) '''
     model = Sequential()
 #    model.add(Reshape((1,10, 128), input_shape=(1, 10, 128)))
-    model.add(Conv2D(100, kernel_size=(10, 20), strides=(1, 1), activation='relu', input_shape=(1, 10, 128), data_format = 'channels_first'))
+    model.add(Conv2D(50, kernel_size=(10, 20), strides=(1, 1), activation='relu', input_shape=(1, 10, 128), data_format = 'channels_first'))
     model.add(MaxPooling2D(pool_size=(1, 5)))
-    model.add(Conv2D(75, kernel_size=(1, 2), activation='relu'))
+    model.add(Conv2D(100, kernel_size=(1, 2), activation='relu'))
     model.add(Flatten())
     model.add(Dropout(0.5))
     model.add(Dense(1000, activation='relu'))
