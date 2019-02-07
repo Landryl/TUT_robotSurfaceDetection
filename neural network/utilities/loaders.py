@@ -90,13 +90,14 @@ def load_for_train_groups(test_size, extractor=generate_values):
 
     return (rs.split(X, y, groups), le)
 
-def load_for_kaggle(extractor=generate_values) :
+def load_for_kaggle_keras(extractor=generate_values) :
     dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
     X_raw = np.load("dataset/X_train_kaggle.npy")
     y = dataset.iloc[:, -1].values
     
-    le = LabelEncoder()
-    y = le.fit_transform(y)
+    lb = LabelBinarizer()
+    y = y.reshape(-1, 1)
+    y = lb.fit_transform(y)
     
     X = extractor(X_raw, 1703)
 
@@ -105,4 +106,4 @@ def load_for_kaggle(extractor=generate_values) :
     X_kaggle_raw = np.load("dataset/X_test_kaggle.npy")
     X_kaggle = extractor(X_kaggle_raw, 1705)
 
-    return (X, y, X_kaggle, le)
+    return (X, y, X_kaggle, lb)

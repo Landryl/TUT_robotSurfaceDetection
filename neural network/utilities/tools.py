@@ -44,8 +44,7 @@ def accuracy_average(classifier, X, y, nbTests) :
     print("Score : ", score, " - ", np.mean(score))
 
 #Creates .cvs output file
-def CSVOutput(y_kaggle, labelencoder):
-    output = labelencoder.inverse_transform(y_kaggle)
+def CSVOutput(output):
     file = open("submission.csv", "w+")
     file.write("# Id,Surface\n")
     for i in range(output.size):
