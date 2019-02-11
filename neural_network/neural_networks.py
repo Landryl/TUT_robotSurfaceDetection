@@ -52,7 +52,7 @@ def recurrent(input_shape, output_size) :
     # The LSTM architecture
     model = Sequential()
     # First LSTM layer with Dropout regularisation
-    model.add(LSTM(units=50, return_sequences=True, input_shape)
+    model.add(LSTM(units=50, return_sequences=True, input_shape=input_shape))
     model.add(Dropout(0.2))
     # Second LSTM layer
     model.add(LSTM(units=50, return_sequences=True))
