@@ -1,7 +1,7 @@
-# TUT_robotSurfaceDetection
+﻿# TUT_robotSurfaceDetection
 Group 32 repository for the Machine Learning challenge (Tampere University)
 
-Members: Cyril Berger, Médéric Carriat, Arthur Millet, Sébastien Hoehn
+Members: Cyril Berger, Médéric Carriat, Sébastien Hoehn, Arthur Millet
 
 Challenge URL : https://www.kaggle.com/c/robotsurface
 
