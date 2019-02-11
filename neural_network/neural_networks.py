@@ -1,6 +1,10 @@
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Conv1D, MaxPooling1D, Reshape, GlobalAveragePooling1D, Dropout
+from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Flatten
+
+from keras import backend as K
+K.set_image_dim_ordering('th')
 
 def basic(input_size, output_size) :
     hidden_layer_size = int((input_size + output_size) / 2)
@@ -29,3 +33,16 @@ def convolutional(input_size, output_size) :
     model_m.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model_m
 
+def convolutional2D(input_size, output_size) :
+    ''' Convolutional network requires the raveller extractor + reshaped in (1, 10, 128) '''
+    model = Sequential()
+#    model.add(Reshape((1,10, 128), input_shape=(1, 10, 128)))
+    model.add(Conv2D(50, kernel_size=(10, 20), strides=(1, 1), activation='relu', input_shape=(1, 10, 128), data_format = 'channels_first'))
+    model.add(MaxPooling2D(pool_size=(1, 5)))
+    model.add(Conv2D(100, kernel_size=(1, 2), activation='relu'))
+    model.add(Flatten())
+    model.add(Dropout(0.5))
+    model.add(Dense(1000, activation='relu'))
+    model.add(Dense(output_size, activation='softmax'))
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model

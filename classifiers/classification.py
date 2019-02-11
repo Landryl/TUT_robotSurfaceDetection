@@ -158,9 +158,9 @@ for train_index, test_index in indices_generator:
         tools.accuracy_average(classifier[1], X_test, y_test, 8)
         print()
 
-    print("Calling the EDVC")
-    y_pred = voting.edvc([etc, rfc, gbc, xgb_alg], X_test)
-    tools.accuracy_test(y_test, y_pred)
+#    print("Calling the EDVC")
+#    y_pred = voting.edvc([etc, rfc, gbc, xgb_alg], X_test)
+#    tools.accuracy_test(y_test, y_pred)
      
 ## Fitting and predicting for real test samples
 etc.fit(X, y)
