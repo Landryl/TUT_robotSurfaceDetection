@@ -1,7 +1,7 @@
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Conv1D, MaxPooling1D, Reshape, GlobalAveragePooling1D, Dropout
-from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Flatten
+from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Flatten, LSTM
 
 from keras import backend as K
 K.set_image_dim_ordering('th')
@@ -42,6 +42,30 @@ def convolutional2D(input_size, output_size) :
     model.add(Conv2D(100, kernel_size=(1, 2), activation='relu'))
     model.add(Flatten())
     model.add(Dropout(0.5))
+    model.add(Dense(1000, activation='relu'))
+    model.add(Dense(output_size, activation='softmax'))
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+def recurrent(input_shape, output_size) :
+    ''' Convolutional network requires the raveller extractor + reshaped in (1, 10, 128) '''
+    # The LSTM architecture
+    model = Sequential()
+    # First LSTM layer with Dropout regularisation
+    model.add(LSTM(units=50, return_sequences=True, input_shape)
+    model.add(Dropout(0.2))
+    # Second LSTM layer
+    model.add(LSTM(units=50, return_sequences=True))
+    model.add(Dropout(0.2))
+    # Third LSTM layer
+    model.add(LSTM(units=50, return_sequences=True))
+    model.add(Dropout(0.2))
+    # Fourth LSTM layer
+    model.add(LSTM(units=50))
+    model.add(Dropout(0.2))
+    # The output layer
+    model.add(Dense(units=1))
+
     model.add(Dense(1000, activation='relu'))
     model.add(Dense(output_size, activation='softmax'))
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
