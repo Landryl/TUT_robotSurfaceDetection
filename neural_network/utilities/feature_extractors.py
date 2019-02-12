@@ -45,6 +45,10 @@ def count_local_maximum(array) :
 
 # Extractors
 
+def RNN_extractor(X_raw, size):
+    X_raw = np.transpose(X_raw, (0, 2, 1))
+    return X_raw
+
 def raveller(X_raw, size) :
     X = np.zeros((size, 1280))
     for i in range(size) :

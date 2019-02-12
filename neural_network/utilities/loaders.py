@@ -5,6 +5,7 @@ from scipy.signal import savgol_filter
 
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, LabelBinarizer
 from sklearn.utils import shuffle
+from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GroupShuffleSplit
 from sklearn.model_selection import StratifiedKFold
@@ -67,6 +68,22 @@ def load_for_train_keras(test_size, extractor=generate_values) :
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
 
     return (X_train, y_train, X_test, y_test, lb)
+
+def load_for_train_keras_categorical(test_size, extractor=generate_values) :
+    dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
+    X_raw = np.load("dataset/X_train_kaggle.npy")
+    y = dataset.iloc[:, -1].values
+
+    le = LabelEncoder()
+    y = le.fit_transform(y)
+    y = to_categorical(y)
+
+    X = extractor(X_raw, 1703)
+
+    X, y = shuffle(X, y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
+
+    return (X_train, y_train, X_test, y_test, le)
 
 def load_for_train_groups(test_size, extractor=generate_values):
     dataset = pd.read_csv('dataset/groups.csv')
