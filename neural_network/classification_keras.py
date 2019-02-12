@@ -26,39 +26,34 @@ print("Done.")
 kaggle_classification = int(input("Classification for Kaggle ? (1 or 0) : "))
 
 if not kaggle_classification :
-    for train_index, test_index in indices_generator :
-        print("\n ▁▃▅▇ SPLIT {} ▇▅▃▁ \n".format(i))
-        i += 1
-    
-        print("▶ Loading training data & preprocessing ◀")
-        #X_train, X_test = X[train_index], X[test_index]
-        #y_train, y_test = y[train_index], y[test_index]
-        X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras(test_size, extractor)
+    print("\n ▁▃▅▇ SPLIT {} ▇▅▃▁ \n".format(i))
+    i += 1
 
-        sc = StandardScaler()
-        X_train = sc.fit_transform(X_train)
-        X_test = sc.transform(X_test)
-          
-        X_train = X_train.reshape((len(X_train), 1, 10, 128))
-        X_test = X_test.reshape((len(X_test), 1, 10, 128))
-        training_generator = MixupGenerator(X_train, y_train, batch_size=batch_size, alpha=alpha)()
-           
-        print("▶ Building the neural network ◀")
-        input_size = 1*128*10
-        input_shape = (X_train, 128, 10)
-        output_size = 9
-        #classifier = neural_networks.basic(input_size, output_size)
-        #classifier = neural_networks.convolutional2D(input_size, output_size)
-        classifier = neural_networks.recurrent(input_shape, output_size)
+    print("▶ Loading training data & preprocessing ◀")
+    X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras(test_size, extractor)
 
-        print("▶ Training ◀")
-        classifier.fit(X_train, y_train, batch_size=10, epochs=50)
-        #classifier.fit_generator(generator=training_generator, steps_per_epoch=X_train.shape[0] // batch_size, validation_data=(X_test, y_test), epochs=epochs, verbose=1)
+    sc = StandardScaler()
+    X_train = sc.fit_transform(X_train)
+    X_test = sc.transform(X_test)
+      
+    X_train = X_train.reshape((len(X_train), 1, 10, 128))
+    X_test = X_test.reshape((len(X_test), 1, 10, 128))
+    training_generator = MixupGenerator(X_train, y_train, batch_size=batch_size, alpha=alpha)()
+       
+    print("▶ Building the neural network ◀")
+    input_size = 1*128*10
+    output_size = 9
+    #classifier = neural_networks.basic(input_size, output_size)
+    classifier = neural_networks.convolutional2D(input_size, output_size)
 
-        print("▶ Evaluating ◀")
-        y_pred = lb.inverse_transform(tools.max_one_hot(classifier.predict(X_test)), 0.5)
-        y_test = lb.inverse_transform(y_test, 0.5)
-        tools.accuracy_test(y_test, y_pred)
+    print("▶ Training ◀")
+    classifier.fit(X_train, y_train, batch_size=10, epochs=100)
+    #classifier.fit_generator(generator=training_generator, steps_per_epoch=X_train.shape[0] // batch_size, validation_data=(X_test, y_test), epochs=epochs, verbose=1)
+
+    print("▶ Evaluating ◀")
+    y_pred = lb.inverse_transform(tools.max_one_hot(classifier.predict(X_test)), 0.5)
+    y_test = lb.inverse_transform(y_test, 0.5)
+    tools.accuracy_test(y_test, y_pred)
 else :
     print("▶ Loading training data & preprocessing ◀")
     X, y, X_kaggle, lb = loaders.load_for_kaggle_keras(extractor)

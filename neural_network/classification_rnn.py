@@ -42,18 +42,19 @@ if not kaggle_classification :
     #X_train = X_train.reshape((len(X_train), 1, 10, 128))
     #X_test = X_test.reshape((len(X_test), 1, 10, 128))
     #training_generator = MixupGenerator(X_train, y_train, batch_size=batch_size, alpha=alpha)()
-       
+    training_generator = tools.generator(X_train, y_train, batch_size)
+
     print("▶ Building the neural network ◀")
     classifier = neural_networks.recurrent(input_shape, output_size)
 
     print("▶ Training ◀")
-    classifier.fit(X_train, y_train, validation_data=[X_test, y_test],
-                   batch_size=10, epochs=1)
-    #classifier.fit_generator(generator=training_generator,
-    #                         steps_per_epoch=X_train.shape[0],
-    #                         validation_data=(X_test, y_test),
-    #                         epochs=epochs,
-    #                         verbose=1)
+    #classifier.fit(X_train, y_train, validation_data=[X_test, y_test],
+    #              batch_size=10, epochs=1)
+    classifier.fit_generator(generator=training_generator,
+                             steps_per_epoch=X_train.shape[0]//batch_size,
+                             validation_data=(X_test, y_test),
+                             epochs=epochs,
+                             verbose=1)
 
     print("▶ Evaluating ◀")
     score = classifier.evaluate(X_test, y_test)

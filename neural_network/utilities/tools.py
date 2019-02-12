@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import cross_val_score
 import matplotlib.pyplot as plt
+import random
 
 # Maths
 
@@ -121,3 +122,15 @@ def max_one_hot(array) :
         i = np.argmax(n)
         r.append([1 if j==i else 0 for j in range(len(n))])
     return np.array(r)
+
+def generator(features, labels, batch_size):
+    # Create empty arrays to contain batch of features and labels#
+    batch_features = np.zeros((batch_size, 128, 10))
+    batch_labels = np.zeros((batch_size,9))
+    while True:
+        for i in range(batch_size):
+            # choose random index in features
+            k = random.randint(0, len(features)-1)
+            batch_features[i] = features[k]
+            batch_labels[i] = labels[k]
+        yield batch_features, batch_labels
