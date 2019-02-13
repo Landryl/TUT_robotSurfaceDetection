@@ -6,12 +6,13 @@ from utilities import feature_extractors
 from utilities import tools
 from mixupgenerator.mixup_generator import MixupGenerator
 import neural_networks
+import numpy as np
 
 print("Done.")
 
 test_size = 0.20
 batch_size = 80
-epochs = 25
+epochs = 2
 alpha = 0.4
 input_shape = (128, 10)    # (timesteps, features)
 output_size = 9
@@ -27,6 +28,7 @@ print("Done.")
 kaggle_classification = int(input("Classification for Kaggle ? (1 or 0) : "))
 
 if not kaggle_classification :
+    repeats = int(input("How many iterations ? "))
     print("▶ Loading training data & preprocessing ◀")
     #X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras(test_size, extractor)
     X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras_categorical(test_size, extractor)
@@ -42,23 +44,29 @@ if not kaggle_classification :
     #X_train = X_train.reshape((len(X_train), 1, 10, 128))
     #X_test = X_test.reshape((len(X_test), 1, 10, 128))
     #training_generator = MixupGenerator(X_train, y_train, batch_size=batch_size, alpha=alpha)()
-       
-    print("▶ Building the neural network ◀")
-    classifier = neural_networks.recurrent(input_shape, output_size)
+    training_generator = tools.generator(X_train, y_train, batch_size)
 
-    print("▶ Training ◀")
-    classifier.fit(X_train, y_train, validation_data=[X_test, y_test],
-                   batch_size=10, epochs=1)
-    #classifier.fit_generator(generator=training_generator,
-    #                         steps_per_epoch=X_train.shape[0],
-    #                         validation_data=(X_test, y_test),
-    #                         epochs=epochs,
-    #                         verbose=1)
+    scores = []
+    for r in range(repeats):
+        print("▶ Building the neural network ◀")
+        classifier = neural_networks.recurrent(input_shape, output_size)
 
-    print("▶ Evaluating ◀")
-    score = classifier.evaluate(X_test, y_test)
-    print("Final loss: {:.2f}".format(score[0]))
-    print("Final accuracy: {:.2f}".format(score[1]))
+        print("▶ Training ◀")
+        #classifier.fit(X_train, y_train, validation_data=[X_test, y_test],
+        #              batch_size=10, epochs=1)
+        classifier.fit_generator(generator=training_generator,
+                                 steps_per_epoch=X_train.shape[0]//batch_size,
+                                 validation_data=(X_test, y_test),
+                                 epochs=epochs,
+                                 verbose=1)
+
+        print("▶ Evaluating ◀")
+        score = classifier.evaluate(X_test, y_test, verbose=0)
+        scores.append(score[1]*100)
+        print('#%d: %.3f\n' % (r+1, score[1]))
+    print("▶ Final results ◀")
+    m, s = np.mean(scores), np.std(scores)
+    print('Accuracy: %.3f%% (+/-%.3f)' % (m, s))
 else :
     print("▶ Loading training data & preprocessing ◀")
     X, y, X_kaggle, lb = loaders.load_for_kaggle_keras(extractor)
