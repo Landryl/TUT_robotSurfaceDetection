@@ -11,8 +11,8 @@ import numpy as np
 print("Done.")
 
 test_size = 0.20
-batch_size = 80
-epochs = 2
+batch_size = 60
+epochs = 25
 alpha = 0.4
 input_shape = (128, 10)    # (timesteps, features)
 output_size = 9
@@ -30,8 +30,8 @@ kaggle_classification = int(input("Classification for Kaggle ? (1 or 0) : "))
 if not kaggle_classification :
     repeats = int(input("How many iterations ? "))
     print("▶ Loading training data & preprocessing ◀")
-    #X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras(test_size, extractor)
-    X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras_categorical(test_size, extractor)
+    X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras(test_size, extractor)
+    #X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras_categorical(test_size, extractor)
 
     # Scaling
     sc = StandardScaler()
@@ -64,6 +64,11 @@ if not kaggle_classification :
         score = classifier.evaluate(X_test, y_test, verbose=0)
         scores.append(score[1]*100)
         print('#%d: %.3f\n' % (r+1, score[1]))
+        y_pred = lb.inverse_transform(tools.max_one_hot(classifier.predict(X_test)), 0.5)
+        y_test = lb.inverse_transform(y_test, 0.5)
+        tools.accuracy_test(y_test, y_pred)
+        tools.conf_matrix(y_test, y_pred)
+
     print("▶ Final results ◀")
     m, s = np.mean(scores), np.std(scores)
     print('Accuracy: %.3f%% (+/-%.3f)' % (m, s))

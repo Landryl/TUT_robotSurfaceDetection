@@ -47,13 +47,14 @@ if not kaggle_classification :
     classifier = neural_networks.convolutional2D(input_size, output_size)
 
     print("▶ Training ◀")
-    classifier.fit(X_train, y_train, batch_size=10, epochs=100)
+    classifier.fit(X_train, y_train, batch_size=10, epochs=epochs)
     #classifier.fit_generator(generator=training_generator, steps_per_epoch=X_train.shape[0] // batch_size, validation_data=(X_test, y_test), epochs=epochs, verbose=1)
 
     print("▶ Evaluating ◀")
     y_pred = lb.inverse_transform(tools.max_one_hot(classifier.predict(X_test)), 0.5)
     y_test = lb.inverse_transform(y_test, 0.5)
     tools.accuracy_test(y_test, y_pred)
+    tools.conf_matrix(y_test, y_pred)
 else :
     print("▶ Loading training data & preprocessing ◀")
     X, y, X_kaggle, lb = loaders.load_for_kaggle_keras(extractor)
