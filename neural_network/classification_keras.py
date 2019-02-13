@@ -11,7 +11,7 @@ print("Done.")
 
 test_size = 0.20
 batch_size = 80
-epochs = 25
+epochs = 50
 alpha = 0.4
 
 i = 0
