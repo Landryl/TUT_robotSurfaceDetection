@@ -50,15 +50,9 @@ def convolutional2D(input_size, output_size) :
 def recurrent(input_shape, output_size) :
     ''' Recurrent network requires the RNN extractor '''
     model = Sequential()
-    model.add(LSTM(units=100,
-                   return_sequences=True,
-                   input_shape=input_shape))
+    model.add(LSTM(units=100, input_shape=input_shape))
     model.add(Dropout(0.5))
-    #model.add(LSTM(units=100, return_sequences=True))
-    #model.add(Dropout(0.2))
-    #model.add(LSTM(units=100, return_sequences=True))
-    #model.add(Dropout(0.2))
-    model.add(LSTM(units=100))
-    model.add(Dense(output_size, activation='softmax', activity_regularizer=keras.regularizers.l1(0.)))
+    model.add(Dense(100, activation='relu'))
+    model.add(Dense(output_size, activation='softmax'))
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model
