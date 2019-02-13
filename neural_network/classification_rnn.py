@@ -12,7 +12,7 @@ print("Done.")
 
 test_size = 0.20
 batch_size = 60
-epochs = 25
+epochs = 1
 alpha = 0.4
 input_shape = (128, 10)    # (timesteps, features)
 output_size = 9
@@ -64,10 +64,11 @@ if not kaggle_classification :
         score = classifier.evaluate(X_test, y_test, verbose=0)
         scores.append(score[1]*100)
         print('#%d: %.3f\n' % (r+1, score[1]))
-        y_pred = lb.inverse_transform(tools.max_one_hot(classifier.predict(X_test)), 0.5)
-        y_test = lb.inverse_transform(y_test, 0.5)
-        tools.accuracy_test(y_test, y_pred)
-        tools.conf_matrix(y_test, y_pred)
+        
+        if repeats == 1:
+            y_pred = lb.inverse_transform(tools.max_one_hot(classifier.predict(X_test)), 0.5)
+            y_test = lb.inverse_transform(y_test, 0.5)
+            tools.conf_matrix(y_test, y_pred)
 
     print("▶ Final results ◀")
     m, s = np.mean(scores), np.std(scores)
