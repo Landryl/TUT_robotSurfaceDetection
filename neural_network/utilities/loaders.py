@@ -91,7 +91,7 @@ def load_for_train_groups(test_size, extractor=generate_values):
     y = dataset.iloc[:, -1].values
     groups = dataset.iloc[:, 1].values
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+    #fig, ax = plt.subplots(figsize=(10, 5))
     
     le = LabelEncoder()
     y = le.fit_transform(y)
@@ -103,7 +103,7 @@ def load_for_train_groups(test_size, extractor=generate_values):
     rs = GroupShuffleSplit(n_splits)#, test_size=test_size)
     #rs = StratifiedKFold(n_splits)
     
-    tools.plot_cv_indices(rs, X, y, groups, ax, n_splits)
+    #tools.plot_cv_indices(rs, X, y, groups, ax, n_splits)
 
     return (rs.split(X, y, groups), le)
 
