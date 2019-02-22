@@ -148,7 +148,7 @@ def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
               "soft_tiles"]
 
     cm = confusion_matrix(y_test, y_pred)
-    plt.figure()
+    plt.figure(figsize=(20, 20))
     np.set_printoptions(precision=2)
 
     if normalize:
@@ -177,5 +177,3 @@ def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
     plt.xlabel('Predicted label')
     plt.tight_layout()
     plt.show()
-
-
