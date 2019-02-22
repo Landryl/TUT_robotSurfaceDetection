@@ -13,6 +13,7 @@
 * indexes of minimum and maximum value
 * interquartile range
 * mean absolute deviation of signal
+* entropy
 
 # TODO:
 
@@ -20,5 +21,4 @@
 * signal magnitude area
 * power
 * energy
-* entropy
 * kurtosis
