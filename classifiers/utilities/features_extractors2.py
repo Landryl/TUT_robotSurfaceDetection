@@ -1,5 +1,6 @@
 import numpy as np
-from scipy.stats import skew, kurtosis
+from scipy.stats import skew, iqr, entropy, kurtosis
+from statsmodels.robust import mad
 
 X_raw = np.load("../dataset/X_train_kaggle.npy")
 features_labels = [] # to remember to add them 
@@ -35,6 +36,15 @@ def features_extraction(X_raw):
         # Index minimum
         for j in range(10):
             features.append(np.argmin(X_raw[i, j]))
+        # Interquartile range
+        for j in range(10):
+            features.append(iqr(X_raw[i, j]))
+        # Mean absolute deviation
+        for j in range(10):
+            features.append(mad(X_raw[i, j]))
+        # Entropy
+        for j in range(10):
+            features.append(entropy(X_raw[i, j]))
         X[i] = features
         # Kurtosis
         for j in range(10):
