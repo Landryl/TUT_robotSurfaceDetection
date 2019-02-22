@@ -7,19 +7,19 @@
 * Maximum
 * Minimum
 * Local extremum
+* variance
+* median
+* skewness
+* indexes of minimum and maximum value
+* kurtosis
+* interquartille range
+* entropy
+* mean absolute deviation of signal
 
 
 # TODO:
 
-* variance
-* median
 * root main square metric
-* indexes of minimum and maximum value
 * signal magnitude area
 * power
 * energy
-* entropy
-* skewness
-* kurtosis
-* interquartlle range
-* mean absolute deviation of signal
