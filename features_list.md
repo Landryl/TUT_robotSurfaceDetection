@@ -21,5 +21,4 @@
 
 # TODO:
 
-* power
-* energy
+* DOMAINE FREQUENTIEL

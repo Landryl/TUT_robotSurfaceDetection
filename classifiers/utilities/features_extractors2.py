@@ -1,9 +1,12 @@
 import numpy as np
 from scipy.stats import skew, iqr, entropy, kurtosis
-from scipy.signal import welch
 from statsmodels.robust import mad
+from sklearn import preprocessing
 
 X_raw = np.load("../dataset/X_train_kaggle.npy")
+#X_praw = np.zeros(len(X_preraw), len(X_preraw[0]))
+#for x in X_preraw:
+#    x = preprocessing.scale(x)
 features_labels = [] # to remember to add them 
 
 def sma(x, y, z):
@@ -52,19 +55,17 @@ def features_extraction(X_raw):
         # Entropy
         for j in range(10):
             features.append(entropy(X_raw[i, j]))
-        X[i] = features
         # Kurtosis
         for j in range(10):
             features.append(kurtosis(X_raw[i, j]))
-<<<<<<< HEAD
         # RMS
         for j in range(10):
             features.append(np.sqrt(np.mean(np.square(X_raw[i, j]))))      
-=======
         # Signal magnitude area
         features.append(sma(X_raw[i, 4], X_raw[i, 5], X_raw[i, 6]))
         features.append(sma(X_raw[i, 7], X_raw[i, 8], X_raw[i, 9]))
->>>>>>> 92ae702a0adcb974f0ae2ab48551e6cc737eaaa5
+        
+        X[i] = features
     return np.array(X)
 
 
