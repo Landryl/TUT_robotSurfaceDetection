@@ -48,7 +48,7 @@ if not kaggle_classification :
     ensemble = []
     for n in range(ensemble_size) :
         print("Training CNN {} ".format(n))
-        classifier = neural_networks.convolutional2D(input_size, output_size)
+        classifier = neural_networks.convolutional2D_random(input_size, output_size)
         history = classifier.fit(X_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(X_test, y_test))
         ensemble.append(classifier)
 
