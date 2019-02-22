@@ -177,3 +177,15 @@ def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
     plt.xlabel('Predicted label')
     plt.tight_layout()
     plt.show()
+
+def copy_channels(X) :
+    X_n = []
+    for item in X :
+        item_n = []
+        for sensor in item :
+            sensor_n = []
+            for n in sensor :
+                sensor_n.append([n,n,n])
+            item_n.append(sensor_n)
+        X_n.append(item_n)
+    return X_n
