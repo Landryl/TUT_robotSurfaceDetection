@@ -17,6 +17,12 @@ def features_extraction(X_raw):
         # Median
         for j in range(10):
             features.append(np.median(X_raw[i, j]))
+        # Index maximum
+        for j in range(10):
+            features.append(np.argmax(X_raw[i, j]))
+        # Index minimum
+        for j in range(10):
+            features.append(np.argmin(X_raw[i, j]))
         X[i] = features
     return np.array(X)
 

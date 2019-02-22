@@ -9,12 +9,11 @@
 * Local extremum
 * variance
 * median
-
+* indexes of minimum and maximum value
 
 # TODO:
 
 * root main square metric
-* indexes of minimum and maximum value
 * signal magnitude area
 * power
 * energy
