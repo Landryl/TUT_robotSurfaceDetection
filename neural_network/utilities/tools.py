@@ -193,3 +193,10 @@ def ensemble_predict(ensemble, X_test) :
         probs += ensemble[nn].predict(X_test)
     probs /= len(ensemble)
     return probs
+
+def ensemble_predict_coef(ensemble, X_test, coefs) :
+    probs = ensemble[0].predict(X_test) * coefs[0]
+    for n in range(1, len(ensemble)) :
+        probs += ensemble[n].predict(X_test) * coefs[n]
+    probs /= np.sum(coefs)
+    return probs
