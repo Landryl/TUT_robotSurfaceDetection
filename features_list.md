@@ -10,6 +10,7 @@
 * variance
 * median
 * indexes of minimum and maximum value
+* interquartile range
 
 # TODO:
 
@@ -20,5 +21,4 @@
 * entropy
 * skewness
 * kurtosis
-* interquartlle range
 * mean absolute deviation of signal

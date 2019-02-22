@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 
 
 X_raw = np.load("../dataset/X_train_kaggle.npy")
@@ -23,6 +24,9 @@ def features_extraction(X_raw):
         # Index minimum
         for j in range(10):
             features.append(np.argmin(X_raw[i, j]))
+        # Interquartile range
+        for j in range(10):
+            features.append(scipy.stats.iqr(X_raw[i, j]))
         X[i] = features
     return np.array(X)
 
