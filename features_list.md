@@ -16,10 +16,10 @@
 * entropy
 * mean absolute deviation of signal
 * root main square metric
+* signal magnitude area
 
 
 # TODO:
 
-* signal magnitude area
 * power
 * energy

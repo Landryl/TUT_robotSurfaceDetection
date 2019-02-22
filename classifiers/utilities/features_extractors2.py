@@ -6,6 +6,12 @@ from statsmodels.robust import mad
 X_raw = np.load("../dataset/X_train_kaggle.npy")
 features_labels = [] # to remember to add them 
 
+def sma(x, y, z):
+    sum = 0
+    for i in range(len(x)):
+        sum += abs(x[i]) + abs(y[i]) + abs(z[i])
+    return sum/len(x)
+
 def features_extraction(X_raw):
     X = [[]]*len(X_raw)
     for i in range(len(X)):
@@ -50,9 +56,15 @@ def features_extraction(X_raw):
         # Kurtosis
         for j in range(10):
             features.append(kurtosis(X_raw[i, j]))
+<<<<<<< HEAD
         # RMS
         for j in range(10):
             features.append(np.sqrt(np.mean(np.square(X_raw[i, j]))))      
+=======
+        # Signal magnitude area
+        features.append(sma(X_raw[i, 4], X_raw[i, 5], X_raw[i, 6]))
+        features.append(sma(X_raw[i, 7], X_raw[i, 8], X_raw[i, 9]))
+>>>>>>> 92ae702a0adcb974f0ae2ab48551e6cc737eaaa5
     return np.array(X)
 
 

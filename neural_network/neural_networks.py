@@ -70,6 +70,7 @@ def convolutional2D(input_size, output_size) :
     model.add(Flatten())
     model.add(Dropout(0.5))
     model.add(Dense(1000, activation='relu'))
+    model.add(Dropout(0.5))
     model.add(Dense(output_size, activation='softmax'))
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model
