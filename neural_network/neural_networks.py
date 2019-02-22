@@ -75,6 +75,33 @@ def convolutional2D(input_size, output_size) :
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model
 
+def convolutional2D_random(input_size, output_size) :
+    ''' Convolutional network requires the raveller extractor + reshaped in (1, 10, 128) '''
+    import random
+
+    nbfeatures_layer1 = int(random.random() * 150 + 20)
+    nbfeatures_layer2 = int(nbfeatures_layer1 * 2 + random.random() * 100)
+    size_dense1 = int(random.random() * 1500 + 200)
+    kernel_width = 2 + int(random.random() * 18)
+    prop_dropout1 = random.random() / 2 + 0.1
+    prop_dropout2 = random.random() / 2 + 0.1
+
+    print("Conv1: {}\nConv2: {}\nDropOut1: {}\nDropOut2: {}\nDense: {}".format(nbfeatures_layer1, nbfeatures_layer2, prop_dropout1, prop_dropout2, size_dense1))
+
+    model = Sequential()
+#    model.add(Reshape((1,10, 128), input_shape=(1, 10, 128)))
+    model.add(Conv2D(nbfeatures_layer1, kernel_size=(10, kernel_width), strides=(1, 1), activation='relu', input_shape=(1, 10, 128), data_format = 'channels_first'))
+    model.add(MaxPooling2D(pool_size=(1, 5)))
+    model.add(Conv2D(nbfeatures_layer2, kernel_size=(1, 2), activation='relu'))
+    model.add(Flatten())
+    model.add(Dropout(prop_dropout1))
+    model.add(Dense(size_dense1, activation='relu'))
+    model.add(Dropout(prop_dropout2))
+    model.add(Dense(output_size, activation='softmax'))
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+
 def convolutional_VGG(input_size, output_size) :
     from keras.applications import VGG16
     vgg = VGG16(weights='imagenet', include_top=False, input_shape=(3, 10, 128))
