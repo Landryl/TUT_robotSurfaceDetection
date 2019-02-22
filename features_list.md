@@ -9,13 +9,8 @@
 * Local extremum
 * variance
 * median
-<<<<<<< HEAD
 * skewness
 * indexes of minimum and maximum value
-
-=======
-* indexes of minimum and maximum value
->>>>>>> dbbfdab222211e2427241ed29e5acb2f134dd22e
 
 # TODO:
 

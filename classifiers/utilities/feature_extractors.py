@@ -67,7 +67,7 @@ def deviationer(X_raw, size) :
     return X
 
 def deviationer_plus(X_raw, size) :
-    X = np.zeros((size, 50))
+    X = np.zeros((size, 70))
     for i in range(size) :
         for j in range(10) :
             X[i, j] = np.mean(X_raw[i, j])
