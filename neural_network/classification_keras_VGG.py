@@ -11,7 +11,7 @@ print("Done.")
 
 test_size = 0.20
 batch_size = 80
-epochs = 50
+epochs = 25
 alpha = 0.4
 
 i = 0
@@ -44,7 +44,7 @@ if not kaggle_classification :
     input_size = 1*128*10
     output_size = 9
     #classifier = neural_networks.basic(input_size, output_size)
-    classifier = neural_networks.convolutional2D(input_size, output_size)
+    classifier = neural_networks.convolutional_VGG(input_size, output_size)
 
     print("▶ Training ◀")
     classifier.fit(X_train, y_train, batch_size=10, epochs=epochs)

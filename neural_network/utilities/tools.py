@@ -47,7 +47,7 @@ def accuracy_average(classifier, X, y, nbTests) :
 
 #Creates .cvs output file
 def CSVOutput(output):
-    file = open("submission.csv", "w+")
+    file = open("../submission.csv", "w+")
     file.write("# Id,Surface\n")
     for i in range(output.size):
         line = str(i) + "," + output[i] + "\n"
@@ -148,7 +148,7 @@ def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
               "soft_tiles"]
 
     cm = confusion_matrix(y_test, y_pred)
-    plt.figure()
+    plt.figure(figsize=(20, 20))
     np.set_printoptions(precision=2)
 
     if normalize:
@@ -178,4 +178,14 @@ def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
     plt.tight_layout()
     plt.show()
 
-
+def copy_channels(X) :
+    X_n = []
+    for item in X :
+        item_n = []
+        for sensor in item :
+            sensor_n = []
+            for n in sensor :
+                sensor_n.append([n,n,n])
+            item_n.append(sensor_n)
+        X_n.append(item_n)
+    return X_n
