@@ -1,5 +1,6 @@
 import numpy as np
-from scipy.stats import skew, iqr, entropy, kurtosis
+from scipy.stats import skew, iqr, kurtosis
+from scipy.special import entr
 from scipy.signal import welch
 from statsmodels.robust import mad
 
@@ -51,20 +52,18 @@ def features_extraction(X_raw):
             features.append(mad(X_raw[i, j]))
         # Entropy
         for j in range(10):
-            features.append(entropy(X_raw[i, j]))
-        X[i] = features
+            features.append(entr(X_raw[i, j]))
         # Kurtosis
         for j in range(10):
             features.append(kurtosis(X_raw[i, j]))
-<<<<<<< HEAD
         # RMS
         for j in range(10):
             features.append(np.sqrt(np.mean(np.square(X_raw[i, j]))))      
-=======
         # Signal magnitude area
         features.append(sma(X_raw[i, 4], X_raw[i, 5], X_raw[i, 6]))
         features.append(sma(X_raw[i, 7], X_raw[i, 8], X_raw[i, 9]))
->>>>>>> 92ae702a0adcb974f0ae2ab48551e6cc737eaaa5
+        
+        X[i] = features
     return np.array(X)
 
 
