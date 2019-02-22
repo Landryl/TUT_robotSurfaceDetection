@@ -11,6 +11,11 @@
 * median
 * skewness
 * indexes of minimum and maximum value
+* kurtosis
+* interquartille range
+* entropy
+* mean absolute deviation of signal
+
 
 # TODO:
 
@@ -18,7 +23,3 @@
 * signal magnitude area
 * power
 * energy
-* entropy
-* kurtosis
-* interquartille range
-* mean absolute deviation of signal

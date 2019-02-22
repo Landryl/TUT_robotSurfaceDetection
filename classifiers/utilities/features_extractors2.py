@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.stats import skew
+from scipy.stats import skew, kurtosis
 
 X_raw = np.load("../dataset/X_train_kaggle.npy")
 features_labels = [] # to remember to add them 
@@ -36,6 +36,9 @@ def features_extraction(X_raw):
         for j in range(10):
             features.append(np.argmin(X_raw[i, j]))
         X[i] = features
+        # Kurtosis
+        for j in range(10):
+            features.append(kurtosis(X_raw[i, j]))
     return np.array(X)
 
 
