@@ -1,9 +1,17 @@
 import numpy as np
-from scipy.stats import skew, iqr, entropy, kurtosis
+from scipy.stats import skew, iqr, kurtosis
+from scipy.special import entr
+from scipy.signal import welch
 from statsmodels.robust import mad
 
 X_raw = np.load("../dataset/X_train_kaggle.npy")
 features_labels = [] # to remember to add them 
+
+def sma(x, y, z):
+    sum = 0
+    for i in range(len(x)):
+        sum += abs(x[i]) + abs(y[i]) + abs(z[i])
+    return sum/len(x)
 
 def features_extraction(X_raw):
     X = [[]]*len(X_raw)
@@ -44,11 +52,18 @@ def features_extraction(X_raw):
             features.append(mad(X_raw[i, j]))
         # Entropy
         for j in range(10):
-            features.append(entropy(X_raw[i, j]))
-        X[i] = features
+            features.append(entr(X_raw[i, j]))
         # Kurtosis
         for j in range(10):
             features.append(kurtosis(X_raw[i, j]))
+        # RMS
+        for j in range(10):
+            features.append(np.sqrt(np.mean(np.square(X_raw[i, j]))))      
+        # Signal magnitude area
+        features.append(sma(X_raw[i, 4], X_raw[i, 5], X_raw[i, 6]))
+        features.append(sma(X_raw[i, 7], X_raw[i, 8], X_raw[i, 9]))
+        
+        X[i] = features
     return np.array(X)
 
 
