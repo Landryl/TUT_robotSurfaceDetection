@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import skew, iqr
+from statsmodels.robust import mad
 
 X_raw = np.load("../dataset/X_train_kaggle.npy")
 features_labels = [] # to remember to add them 
@@ -38,6 +39,9 @@ def features_extraction(X_raw):
         # Interquartile range
         for j in range(10):
             features.append(iqr(X_raw[i, j]))
+        # Mean absolute deviation
+        for j in range(10):
+            features.append(mad(X_raw[i, j]))
         X[i] = features
     return np.array(X)
 

@@ -12,6 +12,7 @@
 * skewness
 * indexes of minimum and maximum value
 * interquartile range
+* mean absolute deviation of signal
 
 # TODO:
 
@@ -21,4 +22,3 @@
 * energy
 * entropy
 * kurtosis
-* mean absolute deviation of signal
