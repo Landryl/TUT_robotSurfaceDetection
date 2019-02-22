@@ -136,7 +136,7 @@ def generator(features, labels, batch_size):
             batch_labels[i] = labels[k]
         yield batch_features, batch_labels
 
-def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
+def conf_matrix(y_test, y_pred, save_path="", normalize=True, cmap=plt.cm.Blues):
     labels = ["hard_tiles",
               "soft_pvc",
               "wood",
@@ -176,7 +176,10 @@ def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.tight_layout()
-    plt.show()
+    if save_path != "" :
+        plt.savefig(save_path)
+    else :
+        plt.show()
 
 def plot_history(history) :
     plt.plot(history.history['acc'])
@@ -186,6 +189,7 @@ def plot_history(history) :
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
+    return plt
 
 def ensemble_predict(ensemble, X_test) :
     probs = ensemble[0].predict(X_test)

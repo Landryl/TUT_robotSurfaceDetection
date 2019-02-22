@@ -1,5 +1,6 @@
 print("Importing librairies...")
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
+import matplotlib.pyplot as plt
 
 from utilities import loaders
 from utilities import feature_extractors
@@ -11,7 +12,7 @@ print("Done.")
 
 test_size = 0.20
 batch_size = 80
-epochs = 50
+epochs = 75
 alpha = 0.4
 ensemble_size = 10
 
@@ -46,18 +47,46 @@ if not kaggle_classification :
     output_size = 9
 
     ensemble = []
+    dropped = 0
     for n in range(ensemble_size) :
         print("Training CNN {} ".format(n))
         classifier = neural_networks.convolutional2D_random(input_size, output_size)
         history = classifier.fit(X_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(X_test, y_test))
-        ensemble.append(classifier)
+    
+        if history.history['val_acc'][-1] < 0.89 :
+            print("Scored too low, dropped.")
+            dropped += 1
+        else :
+            ensemble.append(classifier)
+
+    print("{} dropped out of {}".format(dropped, ensemble_size))
 
     print("▶ Evaluating ◀")
     y_pred = lb.inverse_transform(tools.max_one_hot(tools.ensemble_predict(ensemble, X_test)), 0.5)
     y_test = lb.inverse_transform(y_test, 0.5)
     tools.accuracy_test(y_test, y_pred)
-    tools.conf_matrix(y_test, y_pred)
+    
+    # On crée un dossier
+    import datetime
+    import os
+    import numpy as np
+    t = datetime.datetime.now()
+    n = t.strftime('%d-%m-%Y_%H-%M-%S')
+    os.makedirs(n)
+    
+    tools.conf_matrix(y_test, y_pred, n + "/matrix.png")
 
+    print("▶ Saving neural networks for future usage ◀")
+
+    # On enregistre X_train etc...
+    np.save(n + "/X_train.npy", X_train)
+    np.save(n + "/X_test.npy", X_test)
+    np.save(n + "/y_test.npy", y_test)
+    np.save(n + "/y_train.npy", y_train)
+    
+    # On enregistre tous les réseaux
+    for i,neuralnet in enumerate(ensemble) :
+        neuralnet.save(n + "/{}.h5".format(i))
 
 else :
     print("▶ Loading training data & preprocessing ◀")
