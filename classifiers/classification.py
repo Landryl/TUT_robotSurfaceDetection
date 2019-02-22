@@ -64,8 +64,10 @@ for train_index, test_index in indices_generator:
     knn.fit(X_train, y_train) 
     
     # Logistic Regression
-    lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
-#    lr.fit(X_train, y_train) 
+    print("Training LR")
+    #lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
+    lr = LogisticRegression(penalty='l1')
+    lr.fit(X_train, y_train) 
     
     # SVM 
     print("Training SVC")
@@ -116,6 +118,7 @@ for train_index, test_index in indices_generator:
     # RFECV
     print("Training RFECV")
     rfecv = RFECV(estimator = ExtraTreesClassifier(1000), verbose = 1)
+    #rfecv = RFECV(estimator = LinearDiscriminantAnalysis(), verbose = 1)
     rfecv.fit(X_train, y_train)
 
     if(XGB_installed) :
@@ -152,7 +155,7 @@ for train_index, test_index in indices_generator:
         plt.xlim([-1, X_train.shape[1]])
         plt.show()
 
-    classifiers = [('knn', knn), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc), ('etc_pipe', etc_pipe), ('rfecv', rfecv)]
+    classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc), ('etc_pipe', etc_pipe), ('rfecv', rfecv)]
     if XGB_installed :
         classifiers.append(('xgb', xgb_alg))
     for classifier in classifiers :
@@ -176,6 +179,8 @@ for train_index, test_index in indices_generator:
 #    print("Calling the EDVC")
 #    y_pred = voting.edvc([etc, rfc, gbc, xgb_alg], X_test)
 #    tools.accuracy_test(y_test, y_pred)    
+        
+rfecv = RFECV(estimator = ExtraTreesClassifier(1000), verbose = 1)
 
 ## Fitting and predicting for real test samples
 #etc.fit(X, y)
