@@ -1,6 +1,6 @@
 import keras
 from keras.models import Sequential
-from keras.layers import Dense, Conv1D, MaxPooling1D, Reshape, GlobalAveragePooling1D, Dropout
+from keras.layers import Dense, Conv1D, MaxPooling1D, Reshape, GlobalAveragePooling1D, MaxPooling1D, Dropout
 from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Flatten, LSTM
 
 from keras import backend as K
@@ -32,6 +32,33 @@ def convolutional(input_size, output_size) :
     model_m.add(Dense(output_size, activation='softmax'))
     model_m.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model_m
+
+def convolutional_VGGinspired(input_size, output_size) :
+    model = Sequential()
+    model.add(Reshape((10, 128), input_shape=(1, 10, 128)))
+    #model.add(Flatten(input_shape=(1, 10, 128)))
+
+    model.add(Conv1D(2, kernel_size=3, activation='relu', padding='same'))
+    model.add(Conv1D(2, kernel_size=3, activation='relu', padding='same'))
+    model.add(MaxPooling1D(2, strides=2))
+    
+    model.add(Conv1D(4, kernel_size=3, activation='relu', padding='same'))
+    model.add(Conv1D(4, kernel_size=3, activation='relu', padding='same'))
+    model.add(MaxPooling1D(2, strides=2))
+
+    model.add(Conv1D(8, kernel_size=3, activation='relu', padding='same'))
+    model.add(Conv1D(8, kernel_size=3, activation='relu', padding='same'))
+    model.add(Conv1D(8, kernel_size=3, activation='relu', padding='same'))
+    model.add(Conv1D(8, kernel_size=3, activation='relu', padding='same'))
+    model.add(MaxPooling1D(2, strides=2))
+
+    model.add(Flatten())
+    model.add(Dense(400, activation='relu', name='dense_A'))
+    model.add(Dropout(0.5))
+    model.add(Dense(output_size, activation='sigmoid', name='dense_B'))
+
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
 
 def convolutional2D(input_size, output_size) :
     ''' Convolutional network requires the raveller extractor + reshaped in (1, 10, 128) '''
