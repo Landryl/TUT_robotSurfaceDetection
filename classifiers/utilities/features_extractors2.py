@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import skew, iqr, entropy, kurtosis
+from scipy.signal import welch
 from statsmodels.robust import mad
 
 X_raw = np.load("../dataset/X_train_kaggle.npy")
@@ -49,6 +50,9 @@ def features_extraction(X_raw):
         # Kurtosis
         for j in range(10):
             features.append(kurtosis(X_raw[i, j]))
+        # RMS
+        for j in range(10):
+            features.append(np.sqrt(np.mean(np.square(X_raw[i, j]))))      
     return np.array(X)
 
 
