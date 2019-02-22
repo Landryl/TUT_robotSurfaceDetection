@@ -15,11 +15,11 @@
 * interquartille range
 * entropy
 * mean absolute deviation of signal
+* signal magnitude area
 
 
 # TODO:
 
 * root main square metric
-* signal magnitude area
 * power
 * energy
