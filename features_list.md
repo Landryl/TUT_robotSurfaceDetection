@@ -9,6 +9,7 @@
 * Local extremum
 * variance
 * median
+* skewness
 * indexes of minimum and maximum value
 * interquartile range
 
@@ -19,6 +20,5 @@
 * power
 * energy
 * entropy
-* skewness
 * kurtosis
 * mean absolute deviation of signal
