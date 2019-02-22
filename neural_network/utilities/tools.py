@@ -47,7 +47,7 @@ def accuracy_average(classifier, X, y, nbTests) :
 
 #Creates .cvs output file
 def CSVOutput(output):
-    file = open("submission.csv", "w+")
+    file = open("../submission.csv", "w+")
     file.write("# Id,Surface\n")
     for i in range(output.size):
         line = str(i) + "," + output[i] + "\n"
