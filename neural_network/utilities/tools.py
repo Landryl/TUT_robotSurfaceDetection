@@ -186,3 +186,10 @@ def plot_history(history) :
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
+
+def ensemble_predict(ensemble, X_test) :
+    probs = ensemble[0].predict(X_test)
+    for nn in range(1, len(ensemble)) :
+        probs += ensemble[nn].predict(X_test)
+    probs /= len(ensemble)
+    return probs
