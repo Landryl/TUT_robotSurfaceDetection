@@ -178,14 +178,11 @@ def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
     plt.tight_layout()
     plt.show()
 
-def copy_channels(X) :
-    X_n = []
-    for item in X :
-        item_n = []
-        for sensor in item :
-            sensor_n = []
-            for n in sensor :
-                sensor_n.append([n,n,n])
-            item_n.append(sensor_n)
-        X_n.append(item_n)
-    return X_n
+def plot_history(history) :
+    plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()

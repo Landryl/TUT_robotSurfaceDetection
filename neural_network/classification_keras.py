@@ -11,7 +11,7 @@ print("Done.")
 
 test_size = 0.20
 batch_size = 80
-epochs = 50
+epochs = 500
 alpha = 0.4
 
 i = 0
@@ -47,7 +47,7 @@ if not kaggle_classification :
     classifier = neural_networks.convolutional2D(input_size, output_size)
 
     print("▶ Training ◀")
-    classifier.fit(X_train, y_train, batch_size=10, epochs=epochs)
+    history = classifier.fit(X_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(X_test, y_test))
     #classifier.fit_generator(generator=training_generator, steps_per_epoch=X_train.shape[0] // batch_size, validation_data=(X_test, y_test), epochs=epochs, verbose=1)
 
     print("▶ Evaluating ◀")
@@ -55,6 +55,9 @@ if not kaggle_classification :
     y_test = lb.inverse_transform(y_test, 0.5)
     tools.accuracy_test(y_test, y_pred)
     tools.conf_matrix(y_test, y_pred)
+    tools.plot_history(history)
+
+
 else :
     print("▶ Loading training data & preprocessing ◀")
     X, y, X_kaggle, lb = loaders.load_for_kaggle_keras(extractor)
