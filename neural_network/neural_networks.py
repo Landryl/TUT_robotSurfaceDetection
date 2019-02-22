@@ -74,6 +74,17 @@ def convolutional2D(input_size, output_size) :
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model
 
+def convolutional_VGG(input_size, output_size) :
+    from keras.applications import VGG16
+    vgg = VGG16(weights='imagenet', include_top=False, input_shape=(3, 10, 128))
+    last = vgg.output
+    x = Flatten()(last)
+    x = Dense(1024, activation='relu')(x)
+    preds = Dense(output_size, activation='softmax')(x)
+    model = Model(initial_model.input, preds)
+    model.compile(loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
 def recurrent(input_shape, output_size) :
     ''' Recurrent network requires the RNN extractor '''
     model = Sequential()
