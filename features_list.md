@@ -14,6 +14,7 @@
 * interquartile range
 * mean absolute deviation of signal
 * entropy
+* kurtosis
 
 # TODO:
 
@@ -21,4 +22,3 @@
 * signal magnitude area
 * power
 * energy
-* kurtosis
