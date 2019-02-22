@@ -7,12 +7,12 @@
 * Maximum
 * Minimum
 * Local extremum
+* variance
+* median
 
 
 # TODO:
 
-* variance
-* median
 * root main square metric
 * indexes of minimum and maximum value
 * signal magnitude area

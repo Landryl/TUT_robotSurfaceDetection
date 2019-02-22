@@ -14,6 +14,9 @@ def features_extraction(X_raw):
         # Variance
         for j in range(10):
             features.append(np.var(X_raw[i, j]))
+        # Median
+        for j in range(10):
+            features.append(np.median(X_raw[i, j]))
         X[i] = features
     return np.array(X)
 
