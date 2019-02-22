@@ -114,6 +114,17 @@ def euler_angles(X_raw, size):
             X[i][j] = X_quater[i][j + 1]
     return X
 
+def no_orientation(X_raw, size):
+    X = np.zeros((size, 30))
+    for i in range(size) :
+        for j in range(6) :
+            X[i, j] = np.mean(X_raw[i, j + 4])
+            X[i, j+6] = np.std(X_raw[i, j + 4])
+            X[i, j+12] = X_raw[i, j + 4].max()
+            X[i, j+18] = X_raw[i, j + 4].min()
+            X[i, j+24] = count_local_maximum(tools.convolution_smooth(X_raw[i, j + 4]))
+    return X
+
 def get_all_extractors() :
     return [('raveller', raveller),
             ('averager', averager),
