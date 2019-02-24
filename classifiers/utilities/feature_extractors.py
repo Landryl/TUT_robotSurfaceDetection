@@ -33,16 +33,6 @@ def is_monotonous(array, treshold) :
     #plt.show()
     return 1 if is_decroissant(array, treshold) or is_croissant(array, treshold) else 0
 
-def count_local_maximum(array) :
-#    plt.plot(array)
-    c = 0
-    for i in range(1, len(array) - 1) :
-        if ((array[i] - array[i - 1]) * (array[i + 1] - array[i]) < 0) :
-            c += 1
-#    print(c)
-#    plt.show()
-    return c
-
 # Extractors
 
 def raveller(X_raw, size) :
@@ -74,7 +64,7 @@ def deviationer_plus(X_raw, size) :
             X[i, j+10] = np.std(X_raw[i, j])
             X[i, j+20] = X_raw[i, j].max()
             X[i, j+30] = X_raw[i, j].min()
-            X[i, j+40] = count_local_maximum(tools.convolution_smooth(X_raw[i, j]))
+            X[i, j+40] = tools.count_local_maximum(tools.convolution_smooth(X_raw[i, j]))
     return X
 
 def deviationer_monotonous(X_raw, size) :

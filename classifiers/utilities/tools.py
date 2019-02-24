@@ -7,6 +7,16 @@ import numpy as np
 
 # Maths
 
+def count_local_maximum(array) :
+#    plt.plot(array)
+    c = 0
+    for i in range(1, len(array) - 1) :
+        if ((array[i] - array[i - 1]) * (array[i + 1] - array[i]) < 0) :
+            c += 1
+#    print(c)
+#    plt.show()
+    return c
+
 def quaternionToEulerAngles(x, y, z, w) :
     # X axis rotation
     sinr_cosp = 2.0 * (w * x + y * z)
@@ -42,6 +52,10 @@ def accuracy_test(y_test, y_pred):
 
 def accuracy_average(classifier, X, y, nbTests) :
     score = cross_val_score(classifier, X, y, cv=nbTests)
+    print("Score : ", score, " - ", np.mean(score))
+    
+def accuracy_average2(classifier, X, y) :
+    score = cross_val_score(classifier, X, y, cv=8)
     print("Score : ", score, " - ", np.mean(score))
 
 #Creates .cvs output file
@@ -129,7 +143,7 @@ def conf_matrix(y_test, y_pred, normalize=True, cmap=plt.cm.Blues):
               "soft_tiles"]
 
     cm = confusion_matrix(y_test, y_pred)
-    plt.figure()
+    plt.figure(figsize=(7,7))
     np.set_printoptions(precision=2)
 
     if normalize:
