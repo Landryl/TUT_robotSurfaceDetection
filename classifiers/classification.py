@@ -22,7 +22,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 from sklearn.pipeline import Pipeline
-from sklearn.feature_selection import SelectFromModel
+from sklearn.feature_selection import SelectFromModel, RFECV
 
 from utilities import loaders
 from utilities import tools
@@ -43,7 +43,6 @@ test_size = 0.20
 i = 0
 
 extractor = feature_extractors.euler_angles
-#extractor = feature_extractors.no_orientation
 indices_generator, le = loaders.load_for_train_groups(test_size, extractor)
 X, y, X_kaggle, le = loaders.load_for_kaggle(extractor)
 
@@ -64,10 +63,8 @@ for train_index, test_index in indices_generator:
     knn.fit(X_train, y_train) 
     
     # Logistic Regression
-    print("Training LR")
-    #lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
-    lr = LogisticRegression(penalty='l1')
-    lr.fit(X_train, y_train) 
+    lr = LogisticRegression(solver='lbfgs', multi_class='multinomial')
+#    lr.fit(X_train, y_train) 
     
     # SVM 
     print("Training SVC")
@@ -115,6 +112,11 @@ for train_index, test_index in indices_generator:
     ])
     etc_pipe.fit(X_train, y_train)
     
+    # RFECV
+    print("Training RFECV")
+    rfecv = RFECV(estimator = ExtraTreesClassifier(1000), n_jobs=-1, verbose = 1)
+    rfecv.fit(X_train, y_train)
+
     if(XGB_installed) :
         print("Training XGB")
         xgb_alg = XGBClassifier(learning_rate=0.1, n_estimators=140, max_depth=5,
@@ -149,35 +151,40 @@ for train_index, test_index in indices_generator:
         plt.xlim([-1, X_train.shape[1]])
         plt.show()
 
-    classifiers = [('knn', knn), ('lr', lr), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc), ('etc_pipe', etc_pipe)]
+    classifiers = [('knn', knn), ('svm', svm), ('dtree', dtree), ('rfc', rfc), ('gnb', gnb), ('mlda', mlda), ('gbc', gbc), ('bc', bc), ('etc', etc), ('etc_pipe', etc_pipe), ('rfecv', rfecv)]
     if XGB_installed :
         classifiers.append(('xgb', xgb_alg))
     for classifier in classifiers :
+        if classifier[0] == 'rfecv':
+            nb_features = 0
+            for feature in classifier[1].support_:
+                if feature:
+                    nb_features += 1        
+            print("\nnumber of selected features: " + str(nb_features))
         
         ## Predicting the Test set results
         # Change classifier object
         print(classifier[0])
         y_pred = classifier[1].predict(X_test)
         tools.accuracy_test(y_test, y_pred)
-        tools.accuracy_average(classifier[1], X_test, y_test, 8)
+        if classifier[0] != 'rfecv':
+            tools.accuracy_average(classifier[1], X, y, 8)
         tools.conf_matrix(y_test, y_pred)
         print()
 
 #    print("Calling the EDVC")
 #    y_pred = voting.edvc([etc, rfc, gbc, xgb_alg], X_test)
 #    tools.accuracy_test(y_test, y_pred)    
-        
-
 
 ## Fitting and predicting for real test samples
 #etc.fit(X, y)
 #rfc.fit(X, y)
 #gbc.fit(X, y)
-
+rfecv.fit(X,y)
 #xgb_alg.fit(X, y)
 #y_kaggle = etc.predict(X_kaggle)
 #y_kaggle = voting.edvc([etc, rfc, gbc, xgb_alg], X_kaggle)
-
+y_kaggle = rfecv.predict(X_kaggle)
 
 ## Write .csv file
-#tools.CSVOutput(y_kaggle, le)
+tools.CSVOutput(y_kaggle, le)
