@@ -181,13 +181,13 @@ def features_extraction(X_raw):
         # Signal magnitude area
         features.append(sma(X_raw[i, 4], X_raw[i, 5], X_raw[i, 6]))
         features.append(sma(X_raw[i, 7], X_raw[i, 8], X_raw[i, 9]))
-        # Euler angles
-        # LA FORMULE EST FAUSSE MAIS ASKIP CA MARCHE
-        for angle in tools.quaternionToEulerAngles(features[0], features[1], features[2], features[3]):
-            features.append(angle)
         # Local extremum
         for j in range(10):
             features.append(tools.count_local_maximum(tools.convolution_smooth(X_raw[i, j])))
+        # Euler angles for every feature
+        # To change
+        for angle in tools.quaternionToEulerAngles(features[0], features[1], features[2], features[3]):
+            features.append(angle)
         # Peaks in frequential domain
         for j in range(10):
             peaks_index = peaks(X_raw[i, j])
