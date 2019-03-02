@@ -184,8 +184,8 @@ def features_extraction(X_raw, size):
         # Local extremum
         for j in range(10):
             features.append(tools.count_local_maximum(tools.convolution_smooth(X_raw[i, j])))
-        # Euler angles for every feature
-        for j in range(130, 10):
+        # Euler angles for every features
+        for j in range(0, 140, 10):
             for angle in tools.quaternionToEulerAngles(features[j+0], features[j+1], features[j+2], features[j+3]):
                 features.append(angle)
 #        # Peaks in frequential domain
