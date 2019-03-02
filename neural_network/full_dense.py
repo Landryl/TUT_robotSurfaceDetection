@@ -28,7 +28,7 @@ def load_for_train_keras(test_size, extractor) :
 
     X = extractor(X_raw, 1703)
     
-    X, _ = feature_selectors.boruta(X, y, X)
+#    X, _ = feature_selectors.boruta(X, y, X)
 
     X, y = shuffle(X, y)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
@@ -47,7 +47,7 @@ X_train, y_train, X_test, y_test, lb = load_for_train_keras(test_size, extractor
 print("Done.")
 
 clf = neural_networks.basic(X_train[0].size, 9)
-clf.fit(X_train, y_train, nb_epoch=50)
+clf.fit(X_train, y_train, nb_epoch=100)
 
 y_pred = clf.predict(X_test)
 
