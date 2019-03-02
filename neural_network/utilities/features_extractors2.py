@@ -256,11 +256,11 @@ def features_extraction_no_ori(X_raw, size):
         for j in range(4, 10):
             features.append(tools.count_local_maximum(tools.convolution_smooth(X_raw[i, j])))
         # Peaks in frequential domain
-        for j in range(4, 10):
-            peaks_index = peaks(X_raw[i, j])
-            for arr in peaks_index:
-                for peak in arr:
-                    features.append(peak)
+#        for j in range(4, 10):
+#            peaks_index = peaks(X_raw[i, j])
+#            for arr in peaks_index:
+#                for peak in arr:
+#                    features.append(peak)
 
         # Other extractors usable if we fix them
         # Entropy

@@ -6,18 +6,26 @@ from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Flatten, 
 from keras import backend as K
 K.set_image_dim_ordering('th')
 
+#ori: 0.2
 def basic(input_size, output_size) :
-    hidden_layer_size = int(sqrt(input_size * output_size))
+    hidden_layer_size2 = int(sqrt(input_size * output_size))
+    hidden_layer_size = int(2 * input_size / 3 + output_size)
     
     print("Input size : {}".format(input_size))
     print("Output size : {}".format(output_size))
     print("Hidden layer size : {}".format(hidden_layer_size))
+    print("Last Hidden Layer size : {}".format(hidden_layer_size2))
     
     classifier = Sequential()
-    classifier.add(Dense(activation='relu', input_dim=input_size, units=hidden_layer_size, kernel_initializer='uniform'))
+    classifier.add(Dense(activation='relu', input_dim=input_size, units=hidden_layer_size2, kernel_initializer='uniform'))
+    classifier.add(Dropout(0.2))
     classifier.add(Dense(activation='relu', units=hidden_layer_size, kernel_initializer='uniform'))
     classifier.add(Dropout(0.2))
     classifier.add(Dense(activation='relu', units=hidden_layer_size, kernel_initializer='uniform'))
+    classifier.add(Dropout(0.2))
+    classifier.add(Dense(activation='relu', units=hidden_layer_size, kernel_initializer='uniform'))
+    classifier.add(Dropout(0.2))
+    classifier.add(Dense(activation='relu', units=hidden_layer_size2, kernel_initializer='uniform'))
     classifier.add(Dense(activation='softmax', units=output_size, kernel_initializer='uniform'))
     classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     
