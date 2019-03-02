@@ -20,7 +20,7 @@ X_train, y_train, X_test, y_test, lb = loaders.load_for_train_keras(test_size, e
 print("Done.")
 
 clf = neural_networks.basic(X_train[0].size, 9)
-clf.fit(X_train, y_train, nb_epoch=50)
+clf.fit(X_train, y_train, nb_epoch=50, validation_data=(X_test, y_test))
 
 y_pred = clf.predict(X_test)
 
