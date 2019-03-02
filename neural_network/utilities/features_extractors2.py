@@ -135,7 +135,7 @@ def features_labels():
 ## Features exctraction
 
 # With orientation
-def features_extraction(X_raw):
+def features_extraction(X_raw, size):
     X = [[]]*len(X_raw)
     for i in range(len(X)):
         features = []
@@ -206,7 +206,7 @@ def features_extraction(X_raw):
     return np.array(X)
 
 # Without orientation
-def features_extraction_no_ori(X_raw):
+def features_extraction_no_ori(X_raw, size):
     X = [[]]*len(X_raw)
     for i in range(len(X)):
         features = []
