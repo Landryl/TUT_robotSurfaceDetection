@@ -7,7 +7,7 @@ from keras import backend as K
 K.set_image_dim_ordering('th')
 
 def basic(input_size, output_size) :
-    hidden_layer_size = int(2 * input_size / 3 + output_size)
+    hidden_layer_size = int((input_size + output_size) / 2)
     
     print("Input size : {}".format(input_size))
     print("Output size : {}".format(output_size))

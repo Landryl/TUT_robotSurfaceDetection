@@ -4,36 +4,15 @@ Created on Sat Mar  2 11:19:40 2019
 
 @author: Sébastien Hoehn
 """
+print("Importing librairies...")
 
 from utilities import features_extractors2, loaders, tools, feature_selectors
-from sklearn.preprocessing import LabelBinarizer
+from sklearn.preprocessing import LabelBinarizer, LabelEncoder
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
-import neural_networks
-
-def load_for_train_keras(test_size, extractor) :
-    dataset = pd.read_csv('dataset/y_train_final_kaggle.csv')
-    X_raw = np.load("dataset/X_train_kaggle.npy")
-    y = dataset.iloc[:, -1].values
-
-    #ohe = OneHotEncoder(sparse=False)
-    #y = y.reshape(-1, 1)
-    #y = ohe.fit_transform(y)
-
-    lb = LabelBinarizer()
-    y = y.reshape(-1, 1)
-    y = lb.fit_transform(y)
-
-    X = extractor(X_raw, 1703)
-    
-#    X, _ = feature_selectors.boruta(X, y, X)
-
-    X, y = shuffle(X, y)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
-
-    return (X_train, y_train, X_test, y_test, lb)
+import neural_networks    
 
 print("Done")
 
@@ -42,12 +21,47 @@ test_size = 0.20
 print("Loading dataset")
 
 extractor = features_extractors2.features_extraction
-X_train, y_train, X_test, y_test, lb = load_for_train_keras(test_size, extractor)
+
+## Load data
+X_raw = np.load("./dataset/X_train_kaggle.npy")
+X_kaggle_raw = np.load("./dataset/X_test_kaggle.npy")
+dataset = pd.read_csv("./dataset/groups.csv")
+y = dataset.iloc[:, -1].values
+groups = dataset.iloc[:, 1].values
+
+#ohe = OneHotEncoder(sparse=False)
+#y = y.reshape(-1, 1)
+#y = ohe.fit_transform(y)
+
+y_boruta = y
+
+lb = LabelBinarizer()
+y = y.reshape(-1, 1)
+y = lb.fit_transform(y)
+
+bor = LabelEncoder()
+y_boruta = bor.fit_transform(y_boruta)
+
+## Extract features
+# Without orientation 
+#X = features_extractors2.features_extraction_no_ori(X_raw, 1703)
+#X_kaggle = features_extractors2.features_extraction_no_ori(X_kaggle_raw, 1703)
+
+# With orientation
+X = features_extractors2.features_extraction(X_raw, 1703)
+X_kaggle = features_extractors2.features_extraction(X_kaggle_raw, 1703)
+
+## Feature selection
+X, X_kaggle = feature_selectors.rfe(X, y_boruta, X_kaggle)
+#X = feature_selectors.pca(X)
+#X, X_kaggle = feature_selectors.boruta(X, y_boruta, X_kaggle)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
 
 print("Done.")
 
 clf = neural_networks.basic(X_train[0].size, 9)
-clf.fit(X_train, y_train, nb_epoch=100)
+clf.fit(X_train, y_train, nb_epoch=1000, validation_data=(X_test, y_test))
 
 y_pred = clf.predict(X_test)
 
