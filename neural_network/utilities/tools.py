@@ -8,6 +8,16 @@ import itertools
 
 # Maths
 
+def count_local_maximum(array) :
+#    plt.plot(array)
+    c = 0
+    for i in range(1, len(array) - 1) :
+        if ((array[i] - array[i - 1]) * (array[i + 1] - array[i]) < 0) :
+            c += 1
+#    print(c)
+#    plt.show()
+    return c
+
 def quaternionToEulerAngles(x, y, z, w) :
     # X axis rotation
     sinr_cosp = 2.0 * (w * x + y * z)
