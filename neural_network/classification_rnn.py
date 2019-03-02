@@ -12,7 +12,7 @@ print("Done.")
 
 test_size = 0.20
 batch_size = 60
-epochs = 1
+epochs = 25
 alpha = 0.4
 input_shape = (128, 10)    # (timesteps, features)
 output_size = 9
@@ -93,12 +93,12 @@ else :
     classifier = neural_networks.recurrent(input_shape, output_size)
 
     print("▶ Training ◀")
-    classifier.fit(X, y, batch_size=10, epochs=50)
-    #classifier.fit_generator(generator=training_generator,
-    #                         steps_per_epoch=X.shape[0],
-    #                         batch_size=batch_size,
-    #                         epochs=epochs,
-    #                         verbose=1)
+    #classifier.fit(X, y, batch_size=10, epochs=50)
+    classifier.fit_generator(generator=training_generator,
+                             steps_per_epoch=X.shape[0],
+                             batch_size=batch_size,
+                             epochs=epochs,
+                             verbose=1)
 
     print("▶ Evaluating Kaggle Data ◀")
     y_pred = lb.inverse_transform(tools.max_one_hot(classifier.predict(X_kaggle)), 0.5)
