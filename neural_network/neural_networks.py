@@ -1,4 +1,4 @@
-import keras
+from math import sqrt
 from keras.models import Sequential
 from keras.layers import Dense, Conv1D, MaxPooling1D, Reshape, GlobalAveragePooling1D, MaxPooling1D, Dropout
 from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Flatten, LSTM
@@ -7,7 +7,7 @@ from keras import backend as K
 K.set_image_dim_ordering('th')
 
 def basic(input_size, output_size) :
-    hidden_layer_size = int((input_size + output_size) / 2)
+    hidden_layer_size = int(sqrt(input_size * output_size))
     
     print("Input size : {}".format(input_size))
     print("Output size : {}".format(output_size))
@@ -16,6 +16,8 @@ def basic(input_size, output_size) :
     classifier = Sequential()
     classifier.add(Dense(activation='relu', input_dim=input_size, units=hidden_layer_size, kernel_initializer='uniform'))
     classifier.add(Dense(activation='relu', units=hidden_layer_size, kernel_initializer='uniform'))
+    classifier.add(Dense(activation='relu', units=hidden_layer_size, kernel_initializer='uniform'))
+    classifier.add(Dropout(0.5))
     classifier.add(Dense(activation='softmax', units=output_size, kernel_initializer='uniform'))
     classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     
