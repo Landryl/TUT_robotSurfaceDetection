@@ -23,4 +23,8 @@ clf = neural_networks.basic(X_train[0].size, 9)
 clf.fit(X_train, y_train, nb_epoch=50)
 
 y_pred = clf.predict(X_test)
+
+print("▶ Evaluating ◀")
+y_pred = lb.inverse_transform(tools.max_one_hot(y_pred), 0.5)
+y_test = lb.inverse_transform(y_test, 0.5)
 tools.accuracy_test(y_test, y_pred)
