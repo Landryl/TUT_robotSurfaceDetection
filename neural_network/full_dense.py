@@ -56,16 +56,18 @@ X, X_kaggle = feature_selectors.rfe(X, y_boruta, X_kaggle)
 #X = feature_selectors.pca(X)
 #X, X_kaggle = feature_selectors.boruta(X, y_boruta, X_kaggle)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state=42)
 
 print("Done.")
 
 clf = neural_networks.basic(X_train[0].size, 9)
-clf.fit(X_train, y_train, nb_epoch=1000, validation_data=(X_test, y_test))
+history = clf.fit(X_train, y_train, epochs=3000, validation_data=(X_test, y_test))
 
 y_pred = clf.predict(X_test)
 
 print("▶ Evaluating ◀")
 y_pred = lb.inverse_transform(tools.max_one_hot(y_pred), 0.5)
 y_test = lb.inverse_transform(y_test, 0.5)
+tools.plot_history(history)
 tools.accuracy_test(y_test, y_pred)
+tools.conf_matrix(y_test, y_pred)
