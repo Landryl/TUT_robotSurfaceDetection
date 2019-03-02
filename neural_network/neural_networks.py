@@ -16,8 +16,8 @@ def basic(input_size, output_size) :
     classifier = Sequential()
     classifier.add(Dense(activation='relu', input_dim=input_size, units=hidden_layer_size, kernel_initializer='uniform'))
     classifier.add(Dense(activation='relu', units=hidden_layer_size, kernel_initializer='uniform'))
+    classifier.add(Dropout(0.2))
     classifier.add(Dense(activation='relu', units=hidden_layer_size, kernel_initializer='uniform'))
-    classifier.add(Dropout(0.5))
     classifier.add(Dense(activation='softmax', units=output_size, kernel_initializer='uniform'))
     classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     
