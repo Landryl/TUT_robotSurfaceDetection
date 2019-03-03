@@ -1,7 +1,9 @@
 from math import sqrt
 from keras.models import Sequential
+from keras.regularizers import l2
 from keras.layers import Dense, Conv1D, MaxPooling1D, Reshape, GlobalAveragePooling1D, MaxPooling1D, Dropout
-from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Flatten, LSTM
+from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Flatten, LSTM, BatchNormalization
+from keras.layers import Activation, TimeDistributed
 
 from keras import backend as K
 K.set_image_dim_ordering('th')
@@ -132,5 +134,185 @@ def recurrent(input_shape, output_size) :
     model.add(Dropout(0.5))
     model.add(Dense(100, activation='relu'))
     model.add(Dense(output_size, activation='softmax'))
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+
+def MVP(output_size, regularization_rate=0, weightinit='lecun_uniform') :
+    ''' Convolutional network requires the raveller extractor '''
+    
+    n = 32
+    
+    model= Sequential()
+    #model.add(BatchNormalization(input_shape=(6, 128)))
+    #model.add(Reshape((128, 10)))
+    
+    model.add(Reshape((128, 6), input_shape=(6, 128)))
+    
+    model.add(Conv1D(n, kernel_size=16, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+
+    model.add(Conv1D(n, kernel_size=16, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    model.add(MaxPooling1D(2, strides=2))
+    n = n*2
+  
+    model.add(Conv1D(n, kernel_size=8, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    
+    model.add(Conv1D(n, kernel_size=8, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    model.add(MaxPooling1D(2, strides=2))
+    n = n*2
+    
+    model.add(Conv1D(n, kernel_size=4, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    
+    model.add(Conv1D(n, kernel_size=4, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    model.add(MaxPooling1D(2, strides=2))
+    n = n*2
+    
+    model.add(Conv1D(n, kernel_size=2, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    model.add(MaxPooling1D(2, strides=2))
+    n = n*2
+    
+    #model.add(Dropout(0.25))
+    model.add(Flatten())
+    
+    model.add(Dropout(0.2))
+    model.add(Dense(500, activation='relu'))
+    
+    model.add(Dropout(0.2))
+    model.add(Dense(200, activation='relu'))
+    
+    model.add(Dense(output_size, activation='softmax'))
+    
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+def MVP_lstm(output_size, regularization_rate=0, weightinit='lecun_uniform') :
+    ''' Convolutional network requires the raveller extractor '''
+    
+    model= Sequential()
+   
+    model.add(Reshape((128, 6), input_shape=(6, 128)))
+    
+    model.add(Conv1D(64, kernel_size=3, padding='same',
+                          kernel_regularizer=l2(regularization_rate),
+                          kernel_initializer=weightinit))
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    
+    model.add(Conv1D(64, kernel_size=3, padding='same',
+                          kernel_regularizer=l2(regularization_rate),
+                          kernel_initializer=weightinit))
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    
+    model.add(Conv1D(64, kernel_size=3, padding='same',
+                          kernel_regularizer=l2(regularization_rate),
+                          kernel_initializer=weightinit))
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    
+    model.add(Conv1D(64, kernel_size=3, padding='same',
+                          kernel_regularizer=l2(regularization_rate),
+                          kernel_initializer=weightinit))
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    
+    model.add(Conv1D(64, kernel_size=3, padding='same',
+                          kernel_regularizer=l2(regularization_rate),
+                          kernel_initializer=weightinit))
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    
+    model.add(LSTM(units=128, return_sequences=True, activation='tanh'))
+    model.add(Dropout(0.5))
+ 
+    model.add(LSTM(units=128, return_sequences=True, activation='tanh'))
+    model.add(Dropout(0.5))
+    
+    model.add(TimeDistributed(Dense(activation='softmax', units=output_size, kernel_regularizer=l2(regularization_rate))))    
+    #model.add(Activation('softmax'))
+    
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+
+def jean_kevin(output_size, regularization_rate=0, weightinit='lecun_uniform') :
+    ''' Convolutional network requires the raveller extractor '''
+    
+    n=32
+    
+    model= Sequential()
+   
+    model.add(Reshape((128, 6), input_shape=(6, 128)))
+    
+    model.add(Conv1D(n, kernel_size=16, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    model.add(MaxPooling1D(2, strides=2))
+    n = n*2
+    
+    model.add(Conv1D(n, kernel_size=8, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    model.add(MaxPooling1D(2, strides=2))
+    n = n*2
+    
+    model.add(Conv1D(n, kernel_size=4, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    model.add(MaxPooling1D(2, strides=2))
+    n = n*2
+    
+    model.add(Conv1D(n, kernel_size=2, kernel_regularizer=l2(regularization_rate),
+                     padding='same'))
+    #model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.25))
+    model.add(MaxPooling1D(2, strides=2))
+    n = n*2
+    
+    model.add(LSTM(units=128, return_sequences=True, activation='tanh'))
+    model.add(Dropout(0.5))
+ 
+    model.add(LSTM(units=128, return_sequences=True, activation='tanh'))
+    model.add(Dropout(0.5))
+    
+    model.add(Flatten())
+    
+    model.add(Dense(output_size, activation='softmax'))
+    
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model

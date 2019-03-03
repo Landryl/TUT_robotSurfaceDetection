@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, Normalizer
 from utilities import tools
 
 # Usefull functions
@@ -45,9 +46,21 @@ def count_local_maximum(array) :
 
 # Extractors
 
+def identity(X_raw, size=42):
+    X = []
+    for row in X_raw:
+        X.append(row[4:])
+    return np.array(X)
+
 def RNN_extractor(X_raw, size):
-    X_raw = np.transpose(X_raw, (0, 2, 1))
-    return X_raw
+    X = []
+    for sample in X_raw:
+        scaler = StandardScaler()
+        new_sample = scaler.fit_transform(sample)
+        X.append(new_sample)
+    X = np.array(X)
+    X = np.transpose(X, (0, 2, 1))
+    return np.array(X)
 
 def raveller(X_raw, size) :
     X = np.zeros((size, 1280))
