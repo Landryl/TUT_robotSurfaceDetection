@@ -41,8 +41,7 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.
 print("▶ Generating model ◀")    
 models = modelgen.generate_models(X_train.shape,
                                   number_of_classes=9,
-                                  number_of_models=50,
-                                  model_type='DeepConvLSTM')
+                                  number_of_models=40)
 
 
 print("▶ Finding best architecture and saving it ◀")
@@ -53,7 +52,7 @@ outputfile = os.path.join(result_path, 'modelcomparison.json')
 histories, val_accuracies, val_losses = find_architecture.train_models_on_samples(X_train, y_train,
                                                                            X_val, y_val,
                                                                            models,nr_epochs=5,
-                                                                           subset_size=500,
+                                                                           subset_size=350,
                                                                            verbose=True,
                                                                            batch_size=32,
                                                                            outputfile=outputfile,
