@@ -55,7 +55,7 @@ def accuracy_average(classifier, X, y, nbTests) :
     print("Score : ", score, " - ", np.mean(score))
     
 def accuracy_average2(classifier, X, y) :
-    score = cross_val_score(classifier, X, y, cv=8)
+    score = cross_val_score(classifier, X, y, cv=2)
     print("Score : ", score, " - ", np.mean(score))
 
 #Creates .cvs output file

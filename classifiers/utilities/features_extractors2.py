@@ -189,11 +189,11 @@ def features_extraction(X_raw):
             for angle in tools.quaternionToEulerAngles(features[j+0], features[j+1], features[j+2], features[j+3]):
                 features.append(angle)
         # Peaks in frequential domain
-        for j in range(10):
-            peaks_index = peaks(X_raw[i, j])
-            for arr in peaks_index:
-                for peak in arr:
-                    features.append(peak)
+#        for j in range(10):
+#            peaks_index = peaks(X_raw[i, j])
+#            for arr in peaks_index:
+#                for peak in arr:
+#                    features.append(peak)
 
         # Other extractors usable if we fix them
         # Entropy
