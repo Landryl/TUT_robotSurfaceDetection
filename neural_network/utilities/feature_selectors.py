@@ -18,7 +18,7 @@ from sklearn.model_selection import StratifiedKFold
 def rfe(X, y, X_kaggle):
     rf = RandomForestClassifier(n_estimators=10, n_jobs=-1, class_weight=None, max_depth=7, random_state=0)
     #rf = RandomForestClassifier(100)
-    #rf = ExtraTreesClassifier(200, n_jobs=-1)
+    #rf = ExtraTreesClassifier(500, n_jobs=-1)
     rfecv = RFECV(estimator=rf, step=1, cv=StratifiedKFold(4), scoring='accuracy', verbose=1)
     rfecv.fit(X, y)
     print("Optimal number of features : %d" % rfecv.n_features_)

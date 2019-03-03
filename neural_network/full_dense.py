@@ -59,7 +59,7 @@ X_kaggle = sc.transform(X_kaggle)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
 
 clf = neural_networks.basic(X_train[0].size, 9)
-nb_epoch = 2000
+nb_epoch = 4000
 
 kaggle_classification = int(input("Classification for Kaggle ? (1 or 0) : "))
 
