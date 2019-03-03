@@ -41,20 +41,19 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.
 print("▶ Generating model ◀")    
 models = modelgen.generate_models(X_train.shape,
                                   number_of_classes=9,
-                                  model_type='CNN',
-                                  number_of_models = 20)
+                                  number_of_models=50,
+                                  model_type='DeepConvLSTM')
 
 
 print("▶ Finding best architecture and saving it ◀")
 if not os.path.exists(result_path):
         os.makedirs(result_path)
         
-n = 30
 outputfile = os.path.join(result_path, 'modelcomparison.json')
 histories, val_accuracies, val_losses = find_architecture.train_models_on_samples(X_train, y_train,
-                                                                           X_val[:n, :, :], y_val[:n, :],
+                                                                           X_val, y_val,
                                                                            models,nr_epochs=5,
-                                                                           subset_size=200,
+                                                                           subset_size=500,
                                                                            verbose=True,
                                                                            batch_size=32,
                                                                            outputfile=outputfile,
