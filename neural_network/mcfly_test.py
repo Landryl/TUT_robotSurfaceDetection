@@ -41,6 +41,7 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.
 print("▶ Generating model ◀")    
 models = modelgen.generate_models(X_train.shape,
                                   number_of_classes=9,
+                                  model_type='CNN',
                                   number_of_models = 20)
 
 
@@ -48,11 +49,12 @@ print("▶ Finding best architecture and saving it ◀")
 if not os.path.exists(result_path):
         os.makedirs(result_path)
         
+n = 30
 outputfile = os.path.join(result_path, 'modelcomparison.json')
 histories, val_accuracies, val_losses = find_architecture.train_models_on_samples(X_train, y_train,
-                                                                           X_val, y_val,
+                                                                           X_val[:n, :, :], y_val[:n, :],
                                                                            models,nr_epochs=5,
-                                                                           subset_size=300,
+                                                                           subset_size=200,
                                                                            verbose=True,
                                                                            batch_size=32,
                                                                            outputfile=outputfile,
@@ -68,7 +70,7 @@ print(best_params)
 
 
 print("▶ Training best model ◀")
-nr_epochs = 20
+nr_epochs = 50
 history = best_model.fit(X_train, y_train, epochs=nr_epochs, validation_data=(X_val, y_val))
 
 print("▶ Saving best model ◀")
